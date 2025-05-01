@@ -1,0 +1,99 @@
+databaseChangeLog:
+  - property:
+      dbms: postgresql
+      name: uuid_function
+      value: gen_random_uuid()
+
+  - property:
+      dbms: postgresql
+      name: now
+      value: current_timestamp
+
+  - changeSet:
+      id: 'create-daily-snapshot-table'
+      author: ezra
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            - tableExists:
+                tableName: daily_snapshot
+      changes:
+        - createTable:
+            tableName: daily_snapshot
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  defaultValueComputed: ${uuid_function}
+                  constraints:
+                    primaryKey: true
+
+              - column:
+                  name: snapshot_date
+                  type: date
+
+              - column:
+                  name: created_on
+                  type: timestamp
+                  defaultValueComputed: ${now}
+
+              - column:
+                  name: cogs
+                  type: decimal
+                  defaultValueNumeric: '0'
+
+              - column:
+                  name: cogs_returned
+                  type: decimal
+                  defaultValueNumeric: '0'
+
+              - column:
+                  name: expenses
+                  type: decimal
+                  defaultValueNumeric: '0'
+
+              - column:
+                  name: start_balance_cash
+                  type: decimal
+                  defaultValueNumeric: '0'
+
+              - column:
+                  name: start_balance_joint_account
+                  type: decimal
+                  defaultValueNumeric: '0'
+
+              - column:
+                  name: start_balance_personal_account
+                  type: decimal
+                  defaultValueNumeric: '0'
+
+              - column:
+                  name: end_balance_cash
+                  type: decimal
+                  defaultValueNumeric: '0'
+
+              - column:
+                  name: end_balance_joint_account
+                  type: decimal
+                  defaultValueNumeric: '0'
+
+              - column:
+                  name: end_balance_personal_account
+                  type: decimal
+                  defaultValueNumeric: '0'
+
+              - column:
+                  name: outflow_cash
+                  type: decimal
+                  defaultValueNumeric: '0'
+
+              - column:
+                  name: outflow_joint_account
+                  type: decimal
+                  defaultValueNumeric: '0'
+
+              - column:
+                  name: outflow_personal_account
+                  type: decimal
+                  defaultValueNumeric: '0'
+

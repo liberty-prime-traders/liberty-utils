@@ -1,4 +1,4 @@
-package me.ezra_home.retail_software_solution.configuration.security.okta
+package me.ezra_home.daily_snapshot.configuration
 
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -7,6 +7,7 @@ import org.springframework.security.config.Customizer
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.web.SecurityFilterChain
+import kotlin.jvm.Throws
 
 @EnableWebSecurity
 @Configuration

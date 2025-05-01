@@ -1,0 +1,12 @@
+services:
+
+  daily-snapshot:
+    image: postgres:15
+    container_name: daily-snapshot
+    restart: unless-stopped
+    networks:
+      - ezra-home
+
+networks:
+  ezra-home:
+    external: true
