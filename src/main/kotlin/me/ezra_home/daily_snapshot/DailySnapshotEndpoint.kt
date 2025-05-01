@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
-import java.time.LocalDate
 import java.util.UUID
 
 @CrossOrigin
@@ -20,8 +19,8 @@ class DailySnapshotEndpoint(private val dailySnapshotService: DailySnapshotServi
 
     @GetMapping
     fun getSnapshotsBetweenDates(
-        @PathParam("startDate") startDate: LocalDate,
-        @PathParam("endDate") endDate: LocalDate
+        @PathParam("startDate") startDate: String,
+        @PathParam("endDate") endDate: String
     ): List<DailySnapshotResponseDto> {
 
         return dailySnapshotService.getSnapshotsForDates(startDate, endDate)

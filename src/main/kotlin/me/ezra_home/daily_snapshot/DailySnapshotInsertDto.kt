@@ -9,9 +9,6 @@ import java.time.LocalDate
  */
 data class DailySnapshotInsertDto(
     val snapshotDate: LocalDate? = null,
-    val cogs: BigDecimal? = null,
-    val cogsReturned: BigDecimal? = null,
-    val expenses: BigDecimal? = null,
     val startBalanceCash: BigDecimal? = null,
     val startBalanceJointAccount: BigDecimal? = null,
     val startBalancePersonalAccount: BigDecimal? = null,

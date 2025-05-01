@@ -31,18 +31,6 @@ class DailySnapshotEntity {
     var createdOn: Instant? = null
 
     @ColumnDefault("0")
-    @Column(name = "cogs")
-    var cogs: BigDecimal? = null
-
-    @ColumnDefault("0")
-    @Column(name = "cogs_returned")
-    var cogsReturned: BigDecimal? = null
-
-    @ColumnDefault("0")
-    @Column(name = "expenses")
-    var expenses: BigDecimal? = null
-
-    @ColumnDefault("0")
     @Column(name = "start_balance_cash")
     var startBalanceCash: BigDecimal? = null
 

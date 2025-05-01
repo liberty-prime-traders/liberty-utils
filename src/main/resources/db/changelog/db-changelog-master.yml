@@ -38,21 +38,6 @@ databaseChangeLog:
                   defaultValueComputed: ${now}
 
               - column:
-                  name: cogs
-                  type: decimal
-                  defaultValueNumeric: '0'
-
-              - column:
-                  name: cogs_returned
-                  type: decimal
-                  defaultValueNumeric: '0'
-
-              - column:
-                  name: expenses
-                  type: decimal
-                  defaultValueNumeric: '0'
-
-              - column:
                   name: start_balance_cash
                   type: decimal
                   defaultValueNumeric: '0'

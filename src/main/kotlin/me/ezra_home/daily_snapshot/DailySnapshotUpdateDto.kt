@@ -7,9 +7,6 @@ import java.util.UUID
 data class DailySnapshotUpdateDto(
     val id: UUID? = null,
     val snapshotDate: Optional<LocalDate>? = null,
-    val cogs: Optional<Double>? = null,
-    val cogsReturned: Optional<Double>? = null,
-    val expenses: Optional<Double>? = null,
     val startBalanceCash: Optional<Double>? = null,
     val startBalanceJointAccount: Optional<Double>? = null,
     val startBalancePersonalAccount: Optional<Double>? = null,

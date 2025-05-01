@@ -12,9 +12,6 @@ data class DailySnapshotResponseDto(
     var id: UUID? = null,
     var snapshotDate: String? = null,
     var createdOn: Instant? = null,
-    var cogs: BigDecimal? = null,
-    var cogsReturned: BigDecimal? = null,
-    var expenses: BigDecimal? = null,
     var startBalanceCash: BigDecimal? = null,
     var startBalanceJointAccount: BigDecimal? = null,
     var startBalancePersonalAccount: BigDecimal? = null,
@@ -27,7 +24,5 @@ data class DailySnapshotResponseDto(
     var inflowCash: BigDecimal? = null,
     var inflowJointAccount: BigDecimal? = null,
     var inflowPersonalAccount: BigDecimal? = null,
-    var totalInflow: BigDecimal? = null,
-    var totalOutflow: BigDecimal? = null,
-    var netChange: BigDecimal? = null
+    var totalInflow: BigDecimal? = null
 ) : Serializable

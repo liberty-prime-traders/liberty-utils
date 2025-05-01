@@ -12,14 +12,6 @@ object ExtraFieldsCalculator {
         dailySnapshotResponseDto.totalInflow = dailySnapshotResponseDto.inflowCash
             ?.add(dailySnapshotResponseDto.inflowJointAccount ?: BigDecimal.ZERO)
             ?.add(dailySnapshotResponseDto.inflowPersonalAccount ?: BigDecimal.ZERO)
-
-        dailySnapshotResponseDto.totalOutflow = dailySnapshotResponseDto.cogs
-            ?.add(dailySnapshotResponseDto.cogsReturned ?: BigDecimal.ZERO)
-            ?.add(dailySnapshotResponseDto.expenses ?: BigDecimal.ZERO)
-
-        dailySnapshotResponseDto.netChange = dailySnapshotResponseDto.totalInflow?.subtract(
-            dailySnapshotResponseDto.totalOutflow ?: BigDecimal.ZERO
-        )
     }
 
     private fun getCashInflow(dailySnapshotResponseDto: DailySnapshotResponseDto): BigDecimal? {

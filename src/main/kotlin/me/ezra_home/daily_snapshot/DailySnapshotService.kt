@@ -12,7 +12,9 @@ class DailySnapshotService(
     private val dailySnapshotMapper: DailySnapshotMapper
 ) {
 
-    fun getSnapshotsForDates(snapshotDateAfter: LocalDate, snapshotDateBefore: LocalDate): List<DailySnapshotResponseDto> {
+    fun getSnapshotsForDates(startDate: String, endDate: String): List<DailySnapshotResponseDto> {
+        val snapshotDateAfter = LocalDate.parse(startDate)
+        val snapshotDateBefore = LocalDate.parse(endDate)
         return dailySnapshotRepository.findBySnapshotDateBetween(snapshotDateAfter, snapshotDateBefore)
             .map{dailySnapshotMapper.toResponseDto(it).apply {
                 ExtraFieldsCalculator.calculateAndAppendExtraFields(this)

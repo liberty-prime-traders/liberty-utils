@@ -22,8 +22,6 @@ interface DailySnapshotMapper {
     @Mapping(target = "inflowJointAccount", ignore = true)
     @Mapping(target = "inflowPersonalAccount", ignore = true)
     @Mapping(target = "totalInflow", ignore = true)
-    @Mapping(target = "totalOutflow", ignore = true)
-    @Mapping(target = "netChange", ignore = true)
     fun toResponseDto(entity: DailySnapshotEntity): DailySnapshotResponseDto
 
     @Mapping(target = "id", ignore = true)

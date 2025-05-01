@@ -1,9 +1,21 @@
 services:
 
   daily-snapshot:
-    image: postgres:15
+    image: ezraorina834/daily-snapshot:latest
     container_name: daily-snapshot
     restart: unless-stopped
+    environment:
+      CORS_PATTERNS: "${CORS_PATTERNS}"
+      DB_DOMAIN: "${DB_DOMAIN}"
+      DB_NAME: "${DB_NAME}"
+      DB_PASSWORD: "${DB_PASSWORD}"
+      DB_PORT: "${DB_PORT}"
+      DB_USERNAME: "${DB_USERNAME}"
+      OKTA_CLIENT_ID: "${OKTA_CLIENT_ID}"
+      OKTA_CLIENT_SECRET: "${OKTA_CLIENT_SECRET}"
+      OKTA_DOMAIN: "${OKTA_DOMAIN}"
+      PORT: "${PORT}"
+      SHOW_SQL: "${SHOW_SQL}"
     networks:
       - ezra-home
 
