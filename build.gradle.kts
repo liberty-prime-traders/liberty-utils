@@ -8,9 +8,15 @@ plugins {
 	id("com.google.cloud.tools.jib") version "3.4.5"
 }
 
-jib.to.image = "ezraorina834/daily-snapshot"
 group = "me.ezra-home"
-version = "0.0.1-SNAPSHOT"
+version = "0.0.1"
+
+jib {
+	to {
+		image = "ezraorina834/daily-snapshot"
+		tags = setOf("latest", version.toString())
+	}
+}
 
 java {
 	toolchain {
