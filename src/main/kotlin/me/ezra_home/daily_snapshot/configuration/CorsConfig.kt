@@ -13,6 +13,10 @@ class CorsConfig: WebMvcConfigurer {
 
     override fun addCorsMappings(registry: CorsRegistry) {
         val originPatterns = System.getenv("CORS_PATTERNS").split(',').toTypedArray()
-        registry.addMapping("/**").allowedOrigins(*originPatterns)
+        registry.addMapping("/**")
+            .allowedOrigins(*originPatterns)
+            .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+            .allowedHeaders("*")
+            .allowCredentials(true)
     }
 }
