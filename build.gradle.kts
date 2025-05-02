@@ -12,6 +12,15 @@ group = "me.ezra-home"
 version = "0.0.1"
 
 jib {
+	from {
+		image = "arm32v7/eclipse-temurin:17-jre"
+		platforms {
+			platform {
+				architecture = "arm"
+				os = "linux"
+			}
+		}
+	}
 	to {
 		image = "ezraorina834/daily-snapshot"
 		tags = setOf("latest", version.toString())
