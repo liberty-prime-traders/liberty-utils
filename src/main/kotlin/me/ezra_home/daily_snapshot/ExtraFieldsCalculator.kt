@@ -7,15 +7,20 @@ object ExtraFieldsCalculator {
     fun calculateAndAppendExtraFields(dailySnapshotResponseDto: DailySnapshotResponseDto) {
         dailySnapshotResponseDto.inflowCash = getCashInflow(dailySnapshotResponseDto)
 
+        dailySnapshotResponseDto.inflowBothAccounts = dailySnapshotResponseDto.inflowJointAccount
+            ?.add(dailySnapshotResponseDto.inflowPersonalAccount ?: BigDecimal.ZERO)
+
         dailySnapshotResponseDto.grossInflow = dailySnapshotResponseDto.inflowCash
             ?.add(dailySnapshotResponseDto.inflowJointAccount ?: BigDecimal.ZERO)
             ?.add(dailySnapshotResponseDto.inflowPersonalAccount ?: BigDecimal.ZERO)
             ?.add(dailySnapshotResponseDto.inflowCreditSales ?: BigDecimal.ZERO)
 
+        dailySnapshotResponseDto.grossOutflow = dailySnapshotResponseDto.cogs
+            ?.add(dailySnapshotResponseDto.cogsReturned ?: BigDecimal.ZERO)
+            ?.add(dailySnapshotResponseDto.expenses ?: BigDecimal.ZERO)
+
         dailySnapshotResponseDto.netInflow = dailySnapshotResponseDto.grossInflow
-            ?.subtract(dailySnapshotResponseDto.cogs ?: BigDecimal.ZERO)
-            ?.subtract(dailySnapshotResponseDto.cogsReturned ?: BigDecimal.ZERO)
-            ?.subtract(dailySnapshotResponseDto.expenses ?: BigDecimal.ZERO)
+            ?.subtract(dailySnapshotResponseDto.grossOutflow ?: BigDecimal.ZERO)
     }
 
     private fun getCashInflow(dailySnapshotResponseDto: DailySnapshotResponseDto): BigDecimal? {

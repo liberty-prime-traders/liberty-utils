@@ -21,6 +21,8 @@ interface DailySnapshotMapper {
     @Mapping(target = "inflowCash", ignore = true)
     @Mapping(target = "grossInflow", ignore = true)
     @Mapping(target = "netInflow", ignore = true)
+    @Mapping(target = "grossOutflow", ignore = true)
+    @Mapping(target = "inflowBothAccounts", ignore = true)
     fun toResponseDto(entity: DailySnapshotEntity): DailySnapshotResponseDto
 
     @Mapping(target = "id", ignore = true)
