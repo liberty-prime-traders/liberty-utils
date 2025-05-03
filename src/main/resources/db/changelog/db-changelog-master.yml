@@ -43,27 +43,7 @@ databaseChangeLog:
                   defaultValueNumeric: '0'
 
               - column:
-                  name: start_balance_joint_account
-                  type: decimal
-                  defaultValueNumeric: '0'
-
-              - column:
-                  name: start_balance_personal_account
-                  type: decimal
-                  defaultValueNumeric: '0'
-
-              - column:
                   name: end_balance_cash
-                  type: decimal
-                  defaultValueNumeric: '0'
-
-              - column:
-                  name: end_balance_joint_account
-                  type: decimal
-                  defaultValueNumeric: '0'
-
-              - column:
-                  name: end_balance_personal_account
                   type: decimal
                   defaultValueNumeric: '0'
 
@@ -73,12 +53,31 @@ databaseChangeLog:
                   defaultValueNumeric: '0'
 
               - column:
-                  name: outflow_joint_account
+                  name: inflow_joint_account
                   type: decimal
                   defaultValueNumeric: '0'
 
               - column:
-                  name: outflow_personal_account
+                  name: inflow_personal_account
                   type: decimal
                   defaultValueNumeric: '0'
 
+              - column:
+                  name: inflow_credit_sales
+                  type: decimal
+                  defaultValueNumeric: '0'
+
+              - column:
+                  name: cogs
+                  type: decimal
+                  defaultValueNumeric: '0'
+
+              - column:
+                  name: cogs_returned
+                  type: decimal
+                  defaultValueNumeric: '0'
+
+              - column:
+                  name: expenses
+                  type: decimal
+                  defaultValueNumeric: '0'

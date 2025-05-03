@@ -19,9 +19,8 @@ import org.mapstruct.ReportingPolicy
 interface DailySnapshotMapper {
 
     @Mapping(target = "inflowCash", ignore = true)
-    @Mapping(target = "inflowJointAccount", ignore = true)
-    @Mapping(target = "inflowPersonalAccount", ignore = true)
-    @Mapping(target = "totalInflow", ignore = true)
+    @Mapping(target = "grossInflow", ignore = true)
+    @Mapping(target = "netInflow", ignore = true)
     fun toResponseDto(entity: DailySnapshotEntity): DailySnapshotResponseDto
 
     @Mapping(target = "id", ignore = true)
@@ -29,6 +28,7 @@ interface DailySnapshotMapper {
     fun toEntity(dto: DailySnapshotInsertDto): DailySnapshotEntity
 
     @Mapping(target = "createdOn", ignore = true)
+    @Mapping(target = "snapshotDate", ignore = true)
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     fun partialUpdate(dto: DailySnapshotUpdateDto, @MappingTarget entity: DailySnapshotEntity)
 

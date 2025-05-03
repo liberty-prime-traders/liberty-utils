@@ -35,34 +35,31 @@ class DailySnapshotEntity {
     var startBalanceCash: BigDecimal? = null
 
     @ColumnDefault("0")
-    @Column(name = "start_balance_joint_account")
-    var startBalanceJointAccount: BigDecimal? = null
-
-    @ColumnDefault("0")
-    @Column(name = "start_balance_personal_account")
-    var startBalancePersonalAccount: BigDecimal? = null
-
-    @ColumnDefault("0")
     @Column(name = "end_balance_cash")
     var endBalanceCash: BigDecimal? = null
-
-    @ColumnDefault("0")
-    @Column(name = "end_balance_joint_account")
-    var endBalanceJointAccount: BigDecimal? = null
-
-    @ColumnDefault("0")
-    @Column(name = "end_balance_personal_account")
-    var endBalancePersonalAccount: BigDecimal? = null
 
     @ColumnDefault("0")
     @Column(name = "outflow_cash")
     var outflowCash: BigDecimal? = null
 
-    @ColumnDefault("0")
-    @Column(name = "outflow_joint_account")
-    var outflowJointAccount: BigDecimal? = null
+    @Column(name = "cogs")
+    var cogs: BigDecimal? = null
+
+    @Column(name = "cogs_returned")
+    var cogsReturned: BigDecimal? = null
+
+    @Column(name = "expenses")
+    var expenses: BigDecimal? = null
 
     @ColumnDefault("0")
-    @Column(name = "outflow_personal_account")
-    var outflowPersonalAccount: BigDecimal? = null
+    @Column(name = "inflow_joint_account")
+    var inflowJointAccount: BigDecimal? = null
+
+    @ColumnDefault("0")
+    @Column(name = "inflow_personal_account")
+    var inflowPersonalAccount: BigDecimal? = null
+
+    @ColumnDefault("0")
+    @Column(name = "inflow_credit_sales")
+    var inflowCreditSales: BigDecimal? = null
 }

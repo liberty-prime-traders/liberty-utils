@@ -13,16 +13,15 @@ data class DailySnapshotResponseDto(
     var snapshotDate: String? = null,
     var createdOn: Instant? = null,
     var startBalanceCash: BigDecimal? = null,
-    var startBalanceJointAccount: BigDecimal? = null,
-    var startBalancePersonalAccount: BigDecimal? = null,
     var endBalanceCash: BigDecimal? = null,
-    var endBalanceJointAccount: BigDecimal? = null,
-    var endBalancePersonalAccount: BigDecimal? = null,
     var outflowCash: BigDecimal? = null,
-    var outflowJointAccount: BigDecimal? = null,
-    var outflowPersonalAccount: BigDecimal? = null,
-    var inflowCash: BigDecimal? = null,
+    var cogs: BigDecimal? = null,
+    var cogsReturned: BigDecimal? = null,
+    var expenses: BigDecimal? = null,
     var inflowJointAccount: BigDecimal? = null,
     var inflowPersonalAccount: BigDecimal? = null,
-    var totalInflow: BigDecimal? = null
+    var inflowCash: BigDecimal? = null,
+    var inflowCreditSales: BigDecimal? = null,
+    var grossInflow: BigDecimal? = null,
+    var netInflow: BigDecimal? = null
 ) : Serializable

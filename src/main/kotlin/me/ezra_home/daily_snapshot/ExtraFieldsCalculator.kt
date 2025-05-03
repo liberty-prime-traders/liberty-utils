@@ -6,38 +6,22 @@ object ExtraFieldsCalculator {
 
     fun calculateAndAppendExtraFields(dailySnapshotResponseDto: DailySnapshotResponseDto) {
         dailySnapshotResponseDto.inflowCash = getCashInflow(dailySnapshotResponseDto)
-        dailySnapshotResponseDto.inflowJointAccount = getJointAccountInflow(dailySnapshotResponseDto)
-        dailySnapshotResponseDto.inflowPersonalAccount = getPersonalAccountInflow(dailySnapshotResponseDto)
 
-        dailySnapshotResponseDto.totalInflow = dailySnapshotResponseDto.inflowCash
+        dailySnapshotResponseDto.grossInflow = dailySnapshotResponseDto.inflowCash
             ?.add(dailySnapshotResponseDto.inflowJointAccount ?: BigDecimal.ZERO)
             ?.add(dailySnapshotResponseDto.inflowPersonalAccount ?: BigDecimal.ZERO)
+            ?.add(dailySnapshotResponseDto.inflowCreditSales ?: BigDecimal.ZERO)
+
+        dailySnapshotResponseDto.netInflow = dailySnapshotResponseDto.grossInflow
+            ?.subtract(dailySnapshotResponseDto.cogs ?: BigDecimal.ZERO)
+            ?.subtract(dailySnapshotResponseDto.cogsReturned ?: BigDecimal.ZERO)
+            ?.subtract(dailySnapshotResponseDto.expenses ?: BigDecimal.ZERO)
     }
 
     private fun getCashInflow(dailySnapshotResponseDto: DailySnapshotResponseDto): BigDecimal? {
         return dailySnapshotResponseDto.endBalanceCash?.let { endBalance ->
             dailySnapshotResponseDto.startBalanceCash?.let { startBalance ->
                 dailySnapshotResponseDto.outflowCash?.let { outflow ->
-                    endBalance.subtract(startBalance).add(outflow)
-                }
-            }
-        }
-    }
-
-    private fun getJointAccountInflow(dailySnapshotResponseDto: DailySnapshotResponseDto): BigDecimal? {
-        return dailySnapshotResponseDto.endBalanceJointAccount?.let { endBalance ->
-            dailySnapshotResponseDto.startBalanceJointAccount?.let { startBalance ->
-                dailySnapshotResponseDto.outflowJointAccount?.let { outflow ->
-                    endBalance.subtract(startBalance).add(outflow)
-                }
-            }
-        }
-    }
-
-    private fun getPersonalAccountInflow(dailySnapshotResponseDto: DailySnapshotResponseDto): BigDecimal? {
-        return dailySnapshotResponseDto.endBalancePersonalAccount?.let { endBalance ->
-            dailySnapshotResponseDto.startBalancePersonalAccount?.let { startBalance ->
-                dailySnapshotResponseDto.outflowPersonalAccount?.let { outflow ->
                     endBalance.subtract(startBalance).add(outflow)
                 }
             }

@@ -10,12 +10,12 @@ import java.time.LocalDate
 data class DailySnapshotInsertDto(
     val snapshotDate: LocalDate? = null,
     val startBalanceCash: BigDecimal? = null,
-    val startBalanceJointAccount: BigDecimal? = null,
-    val startBalancePersonalAccount: BigDecimal? = null,
     val endBalanceCash: BigDecimal? = null,
-    val endBalanceJointAccount: BigDecimal? = null,
-    val endBalancePersonalAccount: BigDecimal? = null,
     val outflowCash: BigDecimal? = null,
-    val outflowJointAccount: BigDecimal? = null,
-    val outflowPersonalAccount: BigDecimal? = null
+    val cogs: BigDecimal? = null,
+    val cogsReturned: BigDecimal? = null,
+    val expenses: BigDecimal? = null,
+    val inflowJointAccount: BigDecimal? = null,
+    val inflowPersonalAccount: BigDecimal? = null,
+    val inflowCreditSales: BigDecimal? = null
 ) : Serializable
