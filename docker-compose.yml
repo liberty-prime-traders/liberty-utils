@@ -1,8 +1,8 @@
 services:
 
-  daily-snapshot:
-    image: ezraorina834/daily-snapshot:latest
-    container_name: daily-snapshot
+  liberty-utils:
+    image: ezraorina834/liberty-utils:latest
+    container_name: liberty-utils
     restart: unless-stopped
     environment:
       CORS_PATTERNS: "${CORS_PATTERNS}"
@@ -16,6 +16,7 @@ services:
       OKTA_DOMAIN: "${OKTA_DOMAIN}"
       PORT: "${PORT}"
       SHOW_SQL: "${SHOW_SQL}"
+      OKTA_API_TOKEN: "${OKTA_API_TOKEN}"
 
     networks:
       - ezra-home

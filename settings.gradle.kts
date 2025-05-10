@@ -1,1 +1,1 @@
-rootProject.name = "daily-snapshot"
+rootProject.name = "liberty-utils"

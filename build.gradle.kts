@@ -22,7 +22,7 @@ jib {
 		}
 	}
 	to {
-		image = "ezraorina834/daily-snapshot"
+		image = "ezraorina834/liberty-utils"
 		tags = setOf("latest", version.toString())
 	}
 }
@@ -49,7 +49,9 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("com.okta.spring:okta-spring-boot-starter:3.0.7")
+	implementation("com.okta.spring:okta-spring-sdk")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
+	implementation("com.google.code.gson:gson:2.10.1")
 
 	implementation("org.liquibase:liquibase-core")
 	runtimeOnly("org.postgresql:postgresql")
