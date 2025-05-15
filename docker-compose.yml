@@ -9,7 +9,6 @@ services:
       DB_DOMAIN: "${DB_DOMAIN}"
       DB_NAME: "${DB_NAME}"
       DB_PASSWORD: "${DB_PASSWORD}"
-      DB_PORT: "${DB_PORT}"
       DB_USERNAME: "${DB_USERNAME}"
       OKTA_CLIENT_ID: "${OKTA_CLIENT_ID}"
       OKTA_CLIENT_SECRET: "${OKTA_CLIENT_SECRET}"
