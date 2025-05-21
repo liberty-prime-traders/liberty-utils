@@ -1,5 +1,6 @@
-package me.ezrahome.libertyutils.dailysnapshot
+package me.ezrahome.libertyutils.dailysnapshot.business.snapshot_core
 
+import me.ezrahome.libertyutils.dailysnapshot.model.LibertyLocation
 import java.io.Serializable
 import java.math.BigDecimal
 import java.time.Instant
@@ -25,5 +26,6 @@ data class DailySnapshotResponseDto(
     var inflowCash: BigDecimal? = null,
     var inflowCreditSales: BigDecimal? = null,
     var grossInflow: BigDecimal? = null,
-    var netInflow: BigDecimal? = null
+    var netInflow: BigDecimal? = null,
+    var location: LibertyLocation? = null
 ) : Serializable

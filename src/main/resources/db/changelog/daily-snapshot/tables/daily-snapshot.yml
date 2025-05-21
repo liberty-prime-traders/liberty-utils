@@ -72,3 +72,36 @@ databaseChangeLog:
                   name: expenses
                   type: decimal
                   defaultValueNumeric: '0'
+
+  - changeSet:
+      id: 'add-location-column'
+      author: ezra
+      changes:
+        - addColumn:
+            tableName: daily_snapshot
+            columns:
+              - column:
+                  name: location
+                  type: nvarchar2(50)
+
+  - changeSet:
+        id: 'add-default-value-to-location'
+        author: ezra
+        changes:
+            - update:
+                tableName: daily_snapshot
+                columns:
+                - column:
+                    name: location
+                    value: 'ELDORET'
+                where: "location IS NULL"
+
+  - changeSet:
+      id: 'add-location-constraint'
+      author: ezra
+      changes:
+        - addNotNullConstraint:
+            tableName: daily_snapshot
+            columnName: location
+            columnDataType: nvarchar2(50)
+            constraintName: daily_snapshot_location_notnull

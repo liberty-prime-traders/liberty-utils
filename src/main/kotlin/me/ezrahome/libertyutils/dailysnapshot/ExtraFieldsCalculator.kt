@@ -1,5 +1,6 @@
 package me.ezrahome.libertyutils.dailysnapshot
 
+import me.ezrahome.libertyutils.dailysnapshot.business.snapshot_core.DailySnapshotResponseDto
 import java.math.BigDecimal
 
 object ExtraFieldsCalculator {

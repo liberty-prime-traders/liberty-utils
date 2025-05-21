@@ -1,5 +1,6 @@
-package me.ezrahome.libertyutils.dailysnapshot
+package me.ezrahome.libertyutils.dailysnapshot.business.snapshot_core
 
+import me.ezrahome.libertyutils.dailysnapshot.model.LibertyLocation
 import java.io.Serializable
 import java.math.BigDecimal
 import java.time.LocalDate
@@ -17,5 +18,6 @@ data class DailySnapshotInsertDto(
     val expenses: BigDecimal? = null,
     val inflowJointAccount: BigDecimal? = null,
     val inflowPersonalAccount: BigDecimal? = null,
-    val inflowCreditSales: BigDecimal? = null
+    val inflowCreditSales: BigDecimal? = null,
+    val location: LibertyLocation? = null
 ) : Serializable

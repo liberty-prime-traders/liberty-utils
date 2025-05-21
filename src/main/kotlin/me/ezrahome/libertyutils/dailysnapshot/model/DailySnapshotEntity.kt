@@ -1,7 +1,9 @@
-package me.ezrahome.libertyutils.dailysnapshot
+package me.ezrahome.libertyutils.dailysnapshot.model
 
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
+import jakarta.persistence.EnumType
+import jakarta.persistence.Enumerated
 import jakarta.persistence.Table
 import me.ezrahome.libertyutils.platform.business.audit.AuditIgnore
 import me.ezrahome.libertyutils.platform.business.audit.UiLabel
@@ -67,4 +69,9 @@ class DailySnapshotEntity(
     @Column(name = "inflow_credit_sales")
     @UiLabel("Credit Sales")
     var inflowCreditSales: BigDecimal? = null,
+
+    @Column(name = "location", updatable = false)
+    @Enumerated(EnumType.STRING)
+    var location: LibertyLocation? = null
+
 ): AuditableEntity()

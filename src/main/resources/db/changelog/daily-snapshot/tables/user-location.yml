@@ -1,0 +1,43 @@
+databaseChangeLog:
+
+  - changeSet:
+      id: 'create-user-location-table'
+      author: ezra
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            - tableExists:
+                tableName: user_location
+      changes:
+        - createTable:
+            tableName: user_location
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  defaultValueComputed: ${uuid_function}
+                  constraints:
+                    primaryKey: true
+
+              - column:
+                  name: user_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+                    notNullConstraintName: user_location_user_id_notnull
+
+              - column:
+                  name: location_name
+                  type: nvarchar2(50)
+                  constraints:
+                    nullable: false
+                    notNullConstraintName: user_location_location_name_notnull
+
+              - column:
+                  name: start_on
+                  type: timestamp
+                  defaultValueComputed: ${now}
+
+              - column:
+                  name: end_on
+                  type: timestamp

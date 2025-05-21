@@ -1,5 +1,6 @@
-package me.ezrahome.libertyutils.dailysnapshot
+package me.ezrahome.libertyutils.dailysnapshot.business.snapshot_core
 
+import me.ezrahome.libertyutils.dailysnapshot.model.DailySnapshotEntity
 import me.ezrahome.libertyutils.platform.configuration.mapping.MapperConfig
 import org.mapstruct.BeanMapping
 import org.mapstruct.Mapper
@@ -23,6 +24,7 @@ interface DailySnapshotMapper {
 
     @Mapping(target = "createdOn", ignore = true)
     @Mapping(target = "snapshotDate", ignore = true)
+    @Mapping(target = "location", ignore = true)
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     fun partialUpdate(dto: DailySnapshotUpdateDto, @MappingTarget entity: DailySnapshotEntity)
 

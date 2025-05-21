@@ -1,4 +1,4 @@
-package me.ezrahome.libertyutils.dailysnapshot
+package me.ezrahome.libertyutils.dailysnapshot.business.snapshot_core
 
 import java.math.BigDecimal
 import java.util.Optional

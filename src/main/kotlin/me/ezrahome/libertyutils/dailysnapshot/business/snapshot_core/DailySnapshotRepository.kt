@@ -1,5 +1,6 @@
-package me.ezrahome.libertyutils.dailysnapshot
+package me.ezrahome.libertyutils.dailysnapshot.business.snapshot_core
 
+import me.ezrahome.libertyutils.dailysnapshot.model.DailySnapshotEntity
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
 import java.time.LocalDate
