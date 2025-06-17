@@ -3,9 +3,7 @@ spring:
     name: liberty-utils
 
   datasource:
-    # development url
-    # url: jdbc:postgresql://${DB_DOMAIN}:${DB_PORT}/${DB_NAME}?sslmode=prefer
-    url: jdbc:postgresql://${DB_DOMAIN}/${DB_NAME}?sslmode=require
+    url: jdbc:postgresql://${DB_DOMAIN}:${DB_PORT}/${DB_NAME}?sslmode=prefer
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
 
