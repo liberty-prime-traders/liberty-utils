@@ -1,0 +1,39 @@
+databaseChangeLog:
+
+  - changeSet:
+      id: 'add-user-table'
+      author: kenneth
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            - tableExists:
+                tableName: user
+      changes:
+        - createTable:
+            tableName: user
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  defaultValueComputed: ${uuid_function}
+                  constraints:
+                    primaryKey: true
+
+              - column:
+                  name: full_name
+                  type: nvarchar2(100)
+                  constraints:
+                    nullable: false
+                    notNullConstraintName: user_full_name_notnull
+
+              - column:
+                  name: relationship
+                  type: nvarchar2(50)
+
+              - column:
+                  name: email
+                  type: nvarchar2(50)
+
+              - column:
+                  name: phone_number
+                  type: nvarchar2(50)
