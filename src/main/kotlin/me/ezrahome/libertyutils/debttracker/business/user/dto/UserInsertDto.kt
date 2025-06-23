@@ -1,4 +1,4 @@
-package me.ezrahome.libertyutils.debttracker.business.user.Dto
+package me.ezrahome.libertyutils.debttracker.business.user.dto
 
 import java.io.Serializable
 
