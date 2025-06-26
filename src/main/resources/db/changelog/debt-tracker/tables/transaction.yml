@@ -1,0 +1,47 @@
+databaseChangeLog:
+
+  - changeSet:
+      id: 'add-transaction-table'
+      author: kenneth
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            - tableExists:
+                tableName: transaction
+      changes:
+        - createTable:
+            tableName: transaction
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  defaultValueComputed: ${uuid_function}
+                  constraints:
+                    primaryKey: true
+
+              - column:
+                  name: user_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+                    notNullConstraintName: transaction_user_id_notnull
+
+              - column:
+                  name: transaction_type
+                  type: nvarchar2(10)
+                  constraints:
+                    nullable: false
+                    notNullConstraintName: transaction_type_notnull
+
+              - column:
+                  name: transaction_date
+                  type: date
+
+              - column:
+                  name: amount
+                  type: decimal
+                  defaultValueNumeric: '0'
+
+              - column:
+                  name: description
+                  type: nvarchar2(100)
