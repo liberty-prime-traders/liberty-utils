@@ -12,7 +12,6 @@ import java.util.UUID
 @CacheConfig(cacheNames = [CacheNames.USER])
 class UserCache(
     private val userRepository: UserRepository,
-    private val userMapper: UserMapper,
 ) {
 
     @Cacheable

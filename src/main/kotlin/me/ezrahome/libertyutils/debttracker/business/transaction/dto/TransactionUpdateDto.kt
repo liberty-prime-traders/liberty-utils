@@ -6,7 +6,7 @@ import java.time.LocalDate
 import java.util.Optional
 import java.util.UUID
 
-data class TransactionUpdate (
+data class TransactionUpdateDto (
     var id: UUID? = null,
     var userID: Optional<UUID>? = null,
     var transactionType: Optional<TransactionTypes>? = null,
