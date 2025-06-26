@@ -12,15 +12,15 @@ import me.ezrahome.libertyutils.platform.model.AuditableEntity
 class UserEntity(
     @NotNull
     @Column(name = "full_name", nullable = false)
-    var FullName: String? = null,
+    var fullName: String? = null,
 
     @Column(name = "relationship")
-    var Relationship: String? = null,
+    var relationship: String? = null,
 
     @Column(name = "email")
-    var Email: String? = null,
+    var email: String? = null,
 
     @Column(name = "phone_number")
-    var PhoneNumber: String? = null
+    var phoneNumber: String? = null
 
 ) : AuditableEntity()

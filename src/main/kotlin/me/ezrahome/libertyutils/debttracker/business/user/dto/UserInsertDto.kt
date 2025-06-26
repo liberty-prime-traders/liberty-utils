@@ -3,8 +3,8 @@ package me.ezrahome.libertyutils.debttracker.business.user.dto
 import java.io.Serializable
 
 data class UserInsertDto(
-    val FullName: String? = null,
-    val Relationship: String? = null,
-    val Email: String? null,
-    val PhoneNumber: String? null,
+    val fullName: String? = null,
+    val relationship: String? = null,
+    val email: String? = null,
+    val phoneNumber: String? = null
 ): Serializable

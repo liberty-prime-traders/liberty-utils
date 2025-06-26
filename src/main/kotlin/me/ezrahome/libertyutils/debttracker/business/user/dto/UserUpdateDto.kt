@@ -6,8 +6,8 @@ import java.util.UUID
 
 data class UserUpdateDto(
     var id: UUID? = null,
-    var FullName: Optional<String>? = null,
-    var Relationship: Optional<String>? = null,
-    var Email: Optional<String>? = null,
-    var PhoneNumber: Optional<String>? = null
+    var fullName: Optional<String>? = null,
+    var relationship: Optional<String>? = null,
+    var email: Optional<String>? = null,
+    var phoneNumber: Optional<String>? = null
 ) : Serializable

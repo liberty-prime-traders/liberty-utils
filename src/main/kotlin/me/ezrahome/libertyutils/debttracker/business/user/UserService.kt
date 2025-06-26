@@ -17,36 +17,36 @@ class UserService(
 ) {
 
     fun getAllUsers(): Collection<UserResponseDto> {
-        return userCache.getAllUsers().map { userMapper.toDto(it) }
+        return userCache.getAllUsers().map { userMapper.toResponseDto(it) }
     }
 
     fun createUser(userInsertDto: UserInsertDto): UserResponseDto {
-        val value = StringUtils.getValueOrException(userInsertDto.value, NAME_IS_REQUIRED)
-        userCache.getAllUsers().find { StringUtils.isEquivalent(it.value, value) }
+        val value = StringUtils.getValueOrException(userInsertDto.fullName, NAME_IS_REQUIRED)
+        userCache.getAllUsers().find { StringUtils.isEquivalent(it.fullName, value) }
             ?.let { throw RuntimeException(String.format(NAME_ALREADY_EXISTS, value)) }
 
         val newUserEntity = userMapper.toEntity(userInsertDto)
         userCache.upsertUser(newUserEntity)
-        return userMapper.toDto(newUserEntity)
+        return userMapper.toResponseDto(newUserEntity)
     }
 
     fun updateUser(userDto: UserUpdateDto): UserResponseDto {
         validateUserUpdate(userDto)
         val userToUpdate = userCache.getAllUsers().find { Objects.equals(userDto.id, it.id) }
-            ?: throw UpdatingNonExistingRecordException()
+            ?: throw RuntimeException("User not found")
         userMapper.partialUpdate(userDto, userToUpdate)
         userCache.upsertUser(userToUpdate)
-        return userMapper.toDto(userToUpdate)
+        return userMapper.toResponseDto(userToUpdate)
     }
 
     private fun validateUserUpdate(userUpdateDto: UserUpdateDto) {
-        val value = StringUtils.getValueOrException(userUpdateDto.value, NAME_IS_REQUIRED)
-        userCache.getAllUsers().find { it.value.equals(value, ignoreCase = true) && it.id != userUpdateDto.id }
+        val value = StringUtils.getValueOrException(userUpdateDto.fullName, NAME_IS_REQUIRED)
+        userCache.getAllUsers().find { it.fullName.equals(value, ignoreCase = true) && it.id != userUpdateDto.id }
             ?.let{ throw RuntimeException(String.format(NAME_ALREADY_EXISTS, value)) }
     }
 
     fun deleteUser(id: UUID?) {
-        userCache.deleteUser(id)
+        userCache.deleteUser(id!!)
     }
 
     companion object {

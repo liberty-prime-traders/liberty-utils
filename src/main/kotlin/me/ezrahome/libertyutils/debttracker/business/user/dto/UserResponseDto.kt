@@ -8,8 +8,8 @@ import java.util.UUID
  */
 data class UserResponseDto(
     var id: UUID? = null,
-    var FullName: String? = null,
-    var Relationship: String? = null,
-    var Email: String? = null,
-    var PhoneNumber: String? = null
+    var fullName: String? = null,
+    var relationship: String? = null,
+    var email: String? = null,
+    var phoneNumber: String? = null
 ) : Serializable

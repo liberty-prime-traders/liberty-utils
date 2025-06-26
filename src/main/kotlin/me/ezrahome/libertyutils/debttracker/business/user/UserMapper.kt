@@ -1,5 +1,8 @@
 package me.ezrahome.libertyutils.debttracker.business.user
 
+import me.ezrahome.libertyutils.debttracker.business.user.dto.UserInsertDto
+import me.ezrahome.libertyutils.debttracker.business.user.dto.UserResponseDto
+import me.ezrahome.libertyutils.debttracker.business.user.dto.UserUpdateDto
 import me.ezrahome.libertyutils.debttracker.model.UserEntity
 import me.ezrahome.libertyutils.platform.configuration.mapping.MapperConfig
 import org.mapstruct.BeanMapping
