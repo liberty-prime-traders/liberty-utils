@@ -5,4 +5,6 @@ object TableNames {
     const val SYS_USER = "sys_user"
     const val MASTER_AUDIT = "master_audit"
     const val USER_LOCATION = "user_location"
+    const val USER = "user"
+    const val TRANSACTION = "transaction"
 }

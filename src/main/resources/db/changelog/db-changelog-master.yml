@@ -16,3 +16,7 @@ databaseChangeLog:
   - includeAll:
       path: platform
       relativeToChangelogFile: true
+
+  - includeAll:
+      path: debt-tracker
+      relativeToChangelogFile: true
