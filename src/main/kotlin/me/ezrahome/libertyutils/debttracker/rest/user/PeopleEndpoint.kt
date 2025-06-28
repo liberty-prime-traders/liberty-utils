@@ -18,7 +18,7 @@ import java.util.UUID
 @CrossOrigin
 @RestController
 @RequestMapping("secured/people")
-class UserEndpoint(private val userService: UserService) {
+class PeopleEndpoint(private val userService: UserService) {
 
     @PostMapping
     fun createUser(@RequestBody userInsertDto: UserInsertDto): UserResponseDto = userService.createUser(userInsertDto)

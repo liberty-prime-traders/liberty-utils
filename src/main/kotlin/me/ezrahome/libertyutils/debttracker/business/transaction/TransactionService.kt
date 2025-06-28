@@ -3,6 +3,7 @@ package me.ezrahome.libertyutils.debttracker.business.transaction
 import me.ezrahome.libertyutils.debttracker.business.transaction.dto.TransactionInsertDto
 import me.ezrahome.libertyutils.debttracker.business.transaction.dto.TransactionResponseDto
 import me.ezrahome.libertyutils.debttracker.business.transaction.dto.TransactionUpdateDto
+import me.ezrahome.libertyutils.debttracker.business.user.UserCache
 import org.springframework.stereotype.Service
 import java.util.Objects
 import java.util.UUID
@@ -10,7 +11,8 @@ import java.util.UUID
 @Service
 class TransactionService(
     private val transactionMapper: TransactionMapper,
-    private val transactionCache: TransactionCache
+    private val transactionCache: TransactionCache,
+    private val userCache: UserCache
 ) {
 
     fun getAllTransactions(): Collection<TransactionResponseDto> {
@@ -18,6 +20,9 @@ class TransactionService(
     }
 
     fun createTransaction(transactionInsertDto: TransactionInsertDto): TransactionResponseDto {
+        if(userCache.getAllUsers().find { it.id == transactionInsertDto.userID } == null){
+            throw RuntimeException("User not found")
+        }
         val newTransactionEntity = transactionMapper.toEntity(transactionInsertDto)
         transactionCache.upsertTransaction(newTransactionEntity)
         return transactionMapper.toResponseDto(newTransactionEntity)
