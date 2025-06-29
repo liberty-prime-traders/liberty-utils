@@ -1,16 +1,16 @@
 databaseChangeLog:
 
   - changeSet:
-      id: 'add-user-table'
+      id: 'add-contact-table'
       author: kenneth
       preConditions:
         - onFail: MARK_RAN
         - not:
             - tableExists:
-                tableName: user
+                tableName: contact
       changes:
         - createTable:
-            tableName: user
+            tableName: contact
             columns:
               - column:
                   name: id
@@ -24,10 +24,10 @@ databaseChangeLog:
                   type: nvarchar2(100)
                   constraints:
                     nullable: false
-                    notNullConstraintName: user_full_name_notnull
+                    notNullConstraintName: contact_full_name_notnull
 
               - column:
-                  name: relationship
+                  name: contact_type
                   type: nvarchar2(50)
 
               - column:

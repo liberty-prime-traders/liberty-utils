@@ -25,7 +25,7 @@ class TransactionEntity(
 
     @Enumerated(EnumType.STRING)
     @Column(name = "transaction_type", nullable = false)
-    var TransactionType: TransactionTypes? = null,
+    var TransactionType: TransactionType? = null,
 
     @ColumnDefault("0")
     @Column(name = "amount")

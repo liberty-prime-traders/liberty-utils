@@ -1,6 +1,6 @@
 package me.ezrahome.libertyutils.debttracker.model
 
-enum class TransactionTypes {
+enum class TransactionType {
     DEBIT,
     CREDIT
 }

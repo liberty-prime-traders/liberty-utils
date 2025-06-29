@@ -9,13 +9,13 @@ import me.ezrahome.libertyutils.platform.model.AuditableEntity
 
 @Entity
 @Table(name = TableNames.USER)
-class UserEntity(
+class ContactEntity(
     @NotNull
     @Column(name = "full_name", nullable = false)
     var fullName: String? = null,
 
-    @Column(name = "relationship")
-    var relationship: String? = null,
+    @Column(name = "contact_type")
+    var contactType: ContactType? = null,
 
     @Column(name = "email")
     var email: String? = null,

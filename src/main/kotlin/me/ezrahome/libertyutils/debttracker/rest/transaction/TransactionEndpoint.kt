@@ -21,7 +21,8 @@ import java.util.UUID
 class TransactionEndpoint(private val transactionService: TransactionService) {
 
     @PostMapping
-    fun createTransaction(@RequestBody transactionInsertDto: TransactionInsertDto): TransactionResponseDto = transactionService.createTransaction(transactionInsertDto)
+    fun createTransaction(@RequestBody transactionInsertDto: TransactionInsertDto):
+            TransactionResponseDto = transactionService.createTransaction(transactionInsertDto)
 
     @PutMapping
     fun updateTransaction(@RequestBody transactionUpdateDto: TransactionUpdateDto): TransactionResponseDto {
