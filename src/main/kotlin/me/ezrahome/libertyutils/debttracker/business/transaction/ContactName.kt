@@ -5,4 +5,4 @@ import org.mapstruct.Qualifier
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
 @Target(AnnotationTarget.FUNCTION)
-annotation class ContactName()
+annotation class ContactName

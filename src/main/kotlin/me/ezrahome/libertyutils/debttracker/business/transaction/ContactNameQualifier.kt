@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component
 import java.util.UUID
 
 @Component
-class TransactionQualifier(private val contactCache: ContactCache) {
+class ContactNameQualifier(private val contactCache: ContactCache) {
     @ContactName
     fun getContactName(userID: UUID?):String? {
         return userID.let {
