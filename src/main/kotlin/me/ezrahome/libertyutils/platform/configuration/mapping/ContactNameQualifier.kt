@@ -1,4 +1,4 @@
-package me.ezrahome.libertyutils.debttracker.business.transaction
+package me.ezrahome.libertyutils.platform.configuration.mapping
 
 import me.ezrahome.libertyutils.debttracker.business.contact.ContactCache
 import org.springframework.stereotype.Component

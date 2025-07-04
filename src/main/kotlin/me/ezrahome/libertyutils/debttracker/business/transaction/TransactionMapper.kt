@@ -4,6 +4,7 @@ import me.ezrahome.libertyutils.debttracker.business.transaction.dto.Transaction
 import me.ezrahome.libertyutils.debttracker.business.transaction.dto.TransactionResponseDto
 import me.ezrahome.libertyutils.debttracker.business.transaction.dto.TransactionUpdateDto
 import me.ezrahome.libertyutils.debttracker.model.TransactionEntity
+import me.ezrahome.libertyutils.platform.configuration.mapping.ContactName
 import me.ezrahome.libertyutils.platform.configuration.mapping.MapperConfig
 import org.mapstruct.BeanMapping
 import org.mapstruct.Mapper

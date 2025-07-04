@@ -34,6 +34,6 @@ class ContactsEndpoint(private val contactService: ContactService) {
     
     @DeleteMapping("{id}")
     fun deleteUser(@PathVariable("id") id: UUID?) {
-        contactService.deleteUser(id!!)
+        contactService.deleteContact(id!!)
     }
 }

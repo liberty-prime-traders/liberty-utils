@@ -1,4 +1,4 @@
-package me.ezrahome.libertyutils.debttracker.business.transaction
+package me.ezrahome.libertyutils.platform.configuration.mapping
 
 import org.mapstruct.Qualifier
 
