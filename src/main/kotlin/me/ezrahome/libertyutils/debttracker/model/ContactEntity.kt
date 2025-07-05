@@ -8,7 +8,7 @@ import me.ezrahome.libertyutils.platform.constants.TableNames
 import me.ezrahome.libertyutils.platform.model.AuditableEntity
 
 @Entity
-@Table(name = TableNames.USER)
+@Table(name = TableNames.CONTACT)
 class ContactEntity(
     @NotNull
     @Column(name = "full_name", nullable = false)

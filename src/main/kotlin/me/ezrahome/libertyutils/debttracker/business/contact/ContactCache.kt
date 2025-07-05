@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service
 import java.util.UUID
 
 @Service
-@CacheConfig(cacheNames = [CacheNames.USER])
+@CacheConfig(cacheNames = [CacheNames.CONTACT])
 class ContactCache(
     private val contactRepository: ContactRepository,
 ) {
