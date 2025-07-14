@@ -14,5 +14,7 @@ data class DailySnapshotUpdateDto(
     val expenses: Optional<BigDecimal>? = null,
     val inflowJointAccount: Optional<BigDecimal>? = null,
     val inflowPersonalAccount: Optional<BigDecimal>? = null,
-    val inflowCreditSales: Optional<BigDecimal>? = null
+    val inflowCreditSales: Optional<BigDecimal>? = null,
+    val relaySales: BigDecimal? = null,
+    val transactionCosts: BigDecimal? = null
 )

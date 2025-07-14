@@ -19,5 +19,7 @@ data class DailySnapshotInsertDto(
     val inflowJointAccount: BigDecimal? = null,
     val inflowPersonalAccount: BigDecimal? = null,
     val inflowCreditSales: BigDecimal? = null,
-    val location: LibertyLocation? = null
+    val location: LibertyLocation? = null,
+    val relaySales: BigDecimal? = null,
+    val transactionCosts: BigDecimal? = null
 ) : Serializable
