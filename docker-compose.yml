@@ -1,8 +1,8 @@
 services:
 
-  liberty-utils:
-    image: ezraorina834/liberty-utils:latest
-    container_name: liberty-utils
+  liberty-utils-server:
+    image: ezraorina834/liberty-utils-server:latest
+    container_name: liberty-utils-server
     restart: unless-stopped
     environment:
       CORS_PATTERNS: "${CORS_PATTERNS}"
