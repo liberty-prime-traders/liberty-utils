@@ -10,7 +10,7 @@ import java.util.UUID
  */
 data class TransactionResponseDto (
     var id: UUID? = null,
-    var userID: UUID? = null,
+    var userId: UUID? = null,
     var contactName: String? = null,
     var transactionType: TransactionType? = null,
     var transactionDate: LocalDate? = null,

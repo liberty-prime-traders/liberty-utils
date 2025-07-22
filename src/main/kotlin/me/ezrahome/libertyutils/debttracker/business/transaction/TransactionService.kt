@@ -20,7 +20,7 @@ class TransactionService(
     }
 
     fun createTransaction(transactionInsertDto: TransactionInsertDto): TransactionResponseDto {
-        if(contactCache.getAllContacts().find { it.id == transactionInsertDto.userID } == null){
+        if(contactCache.getAllContacts().find { it.id == transactionInsertDto.userId } == null){
             throw RuntimeException("User not found")
         }
         val newTransactionEntity = transactionMapper.toEntity(transactionInsertDto)

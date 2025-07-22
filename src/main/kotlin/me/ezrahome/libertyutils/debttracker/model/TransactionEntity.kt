@@ -18,20 +18,20 @@ import java.math.BigDecimal
 class TransactionEntity(
     @NotNull
     @Column(name = "user_id", nullable = false)
-    var UserID: UUID? = null,
+    var userId: UUID? = null,
 
     @Column(name = "transaction_date", updatable = false)
-    var TransactionDate: LocalDate? = null,
+    var transactionDate: LocalDate? = null,
 
     @Enumerated(EnumType.STRING)
     @Column(name = "transaction_type", nullable = false)
-    var TransactionType: TransactionType? = null,
+    var transactionType: TransactionType? = null,
 
     @ColumnDefault("0")
     @Column(name = "amount")
-    var Amount: BigDecimal? = null,
+    var amount: BigDecimal? = null,
 
     @Column(name = "description")
-    var Description: String? = null
+    var description: String? = null
 
 ) : AuditableEntity()

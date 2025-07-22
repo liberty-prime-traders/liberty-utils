@@ -7,7 +7,7 @@ import java.time.LocalDate
 import java.util.UUID
 
 data class TransactionInsertDto(
-    val userID: UUID? = null,
+    val userId: UUID? = null,
     val transactionType: TransactionType? = null,
     val transactionDate: LocalDate? = null,
     val amount: BigDecimal? = null,
