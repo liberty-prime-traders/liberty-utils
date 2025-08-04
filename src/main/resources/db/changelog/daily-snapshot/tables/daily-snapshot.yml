@@ -105,3 +105,20 @@ databaseChangeLog:
             columnName: location
             columnDataType: nvarchar2(50)
             constraintName: daily_snapshot_location_notnull
+
+  - changeSet:
+      id: 'add-extra-expense-related-columns'
+      author: ezra
+      changes:
+          - addColumn:
+              tableName: daily_snapshot
+              columns:
+              - column:
+                  name: transaction_costs
+                  type: decimal
+                  defaultValueNumeric: '0'
+
+              - column:
+                  name: relay_sales
+                  type: decimal
+                  defaultValueNumeric: '0'
