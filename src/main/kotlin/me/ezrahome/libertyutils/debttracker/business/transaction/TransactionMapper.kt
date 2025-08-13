@@ -21,6 +21,7 @@ interface TransactionMapper {
     @Mapping(target = "id", ignore = true)
     fun toEntity(dto: TransactionInsertDto): TransactionEntity
 
+    @Mapping(target = "location", ignore = true)
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     fun partialUpdate(dto: TransactionUpdateDto, @MappingTarget entity: TransactionEntity)
 

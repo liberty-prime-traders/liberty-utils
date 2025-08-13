@@ -45,3 +45,17 @@ databaseChangeLog:
               - column:
                   name: description
                   type: nvarchar2(100)
+
+  - changeSet:
+      id: 'add-location-column'
+      author: kenneth
+      changes:
+        - addColumn:
+            tableName: transaction
+            columns:
+              - column:
+                  name: location
+                  type: nvarchar2(50)
+                  constraints:
+                    nullable: false
+                    notNullConstraintName: location_notnull

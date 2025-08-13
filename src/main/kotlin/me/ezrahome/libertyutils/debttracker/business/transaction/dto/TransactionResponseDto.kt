@@ -1,5 +1,6 @@
 package me.ezrahome.libertyutils.debttracker.business.transaction.dto
 
+import me.ezrahome.libertyutils.dailysnapshot.model.LibertyLocation
 import me.ezrahome.libertyutils.debttracker.model.TransactionType
 import java.math.BigDecimal
 import java.time.LocalDate
@@ -15,5 +16,6 @@ data class TransactionResponseDto (
     var transactionType: TransactionType? = null,
     var transactionDate: LocalDate? = null,
     var amount: BigDecimal? = null,
-    var description: String? = null
+    var description: String? = null,
+    var location: LibertyLocation? = null
 )

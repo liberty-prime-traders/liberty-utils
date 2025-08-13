@@ -1,5 +1,6 @@
 package me.ezrahome.libertyutils.debttracker.business.transaction.dto
 
+import me.ezrahome.libertyutils.dailysnapshot.model.LibertyLocation
 import me.ezrahome.libertyutils.debttracker.model.TransactionType
 import java.io.Serializable
 import java.math.BigDecimal
@@ -11,5 +12,6 @@ data class TransactionInsertDto(
     val transactionType: TransactionType? = null,
     val transactionDate: LocalDate? = null,
     val amount: BigDecimal? = null,
-    val description: String? = null
+    val description: String? = null,
+    val location: LibertyLocation? = null
 ): Serializable
