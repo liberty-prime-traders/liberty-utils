@@ -27,5 +27,7 @@ data class DailySnapshotResponseDto(
     var inflowCreditSales: BigDecimal? = null,
     var grossInflow: BigDecimal? = null,
     var netInflow: BigDecimal? = null,
-    var location: LibertyLocation? = null
+    var location: LibertyLocation? = null,
+    var relaySales: BigDecimal? = null,
+    var transactionCosts: BigDecimal? = null
 ) : Serializable

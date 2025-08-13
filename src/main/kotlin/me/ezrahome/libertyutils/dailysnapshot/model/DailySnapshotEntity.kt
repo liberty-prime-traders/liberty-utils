@@ -72,6 +72,14 @@ class DailySnapshotEntity(
 
     @Column(name = "location", updatable = false)
     @Enumerated(EnumType.STRING)
-    var location: LibertyLocation? = null
+    var location: LibertyLocation? = null,
+
+    @ColumnDefault("0")
+    @Column(name = "transaction_costs")
+    var transactionCosts: BigDecimal? = null,
+
+    @ColumnDefault("0")
+    @Column(name = "relay_sales")
+    var relaySales: BigDecimal? = null
 
 ): AuditableEntity()
