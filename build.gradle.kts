@@ -22,7 +22,7 @@ jib {
 		}
 	}
 	to {
-		image = "ezraorina834/liberty-utils"
+		image = "ezraorina834/liberty-utils-server"
 		tags = setOf("latest", version.toString())
 	}
 }
