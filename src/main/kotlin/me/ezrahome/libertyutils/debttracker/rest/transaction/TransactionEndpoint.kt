@@ -1,5 +1,6 @@
 package me.ezrahome.libertyutils.debttracker.rest.transaction
 
+import jakarta.websocket.server.PathParam
 import me.ezrahome.libertyutils.debttracker.business.transaction.dto.TransactionInsertDto
 import me.ezrahome.libertyutils.debttracker.business.transaction.dto.TransactionUpdateDto
 import me.ezrahome.libertyutils.debttracker.business.transaction.dto.TransactionResponseDto
@@ -31,6 +32,15 @@ class TransactionEndpoint(private val transactionService: TransactionService) {
 
     @GetMapping
     fun getAllTransactions(): Collection<TransactionResponseDto> = transactionService.getAllTransactions()
+
+    @GetMapping(params = ["startDate", "endDate"])
+    fun getTransactionsBetweenDates(
+        @PathParam("startDate") startDate: String,
+        @PathParam("endDate") endDate: String
+    ): Collection<TransactionResponseDto> {
+
+        return transactionService.getTransactionsForTrasactionDate(startDate, endDate)
+    }
 
     @DeleteMapping("{id}")
     fun deleteTransaction(@PathVariable("id") id: UUID?) {

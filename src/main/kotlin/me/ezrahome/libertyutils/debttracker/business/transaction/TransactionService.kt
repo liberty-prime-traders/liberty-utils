@@ -1,6 +1,7 @@
 package me.ezrahome.libertyutils.debttracker.business.transaction
 
 import me.ezrahome.libertyutils.dailysnapshot.business.user_location.UserLocationRepository
+import me.ezrahome.libertyutils.dailysnapshot.model.UserLocationEntity
 import me.ezrahome.libertyutils.debttracker.business.transaction.dto.TransactionInsertDto
 import me.ezrahome.libertyutils.debttracker.business.transaction.dto.TransactionResponseDto
 import me.ezrahome.libertyutils.debttracker.business.transaction.dto.TransactionUpdateDto
@@ -9,6 +10,8 @@ import me.ezrahome.libertyutils.debttracker.model.TransactionEntity
 import me.ezrahome.libertyutils.platform.configuration.security.LibertyPermissions
 import me.ezrahome.libertyutils.platform.configuration.session.SessionContextProvider
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
+import java.time.LocalDate
 import java.util.Objects
 import java.util.UUID
 
@@ -17,12 +20,33 @@ class TransactionService(
     private val transactionMapper: TransactionMapper,
     private val transactionCache: TransactionCache,
     private val contactCache: ContactCache,
+    private val transactionRepository: TransactionRepository,
     private val userLocationRepository: UserLocationRepository
 ) {
 
     fun getAllTransactions(): Collection<TransactionResponseDto> {
         return transactionCache.getAllTransactions().map { transactionMapper.toResponseDto(it) }
     }
+
+    @Transactional(readOnly = true)
+    fun getTransactionsForTrasactionDate(startDate: String, endDate: String): Collection<TransactionResponseDto> {
+        val transactionDateAfter = LocalDate.parse(startDate)
+        val transactionDateBefore = LocalDate.parse(endDate)
+        val currentLocation = getUserLocation()
+        val predicate: (TransactionEntity) -> Boolean = { tx ->
+            LibertyPermissions.isLibertyAdmin() || tx.location == currentLocation.location
+        }
+
+        val transactions = transactionRepository.findTransactionsByTransactionDateBetween(transactionDateAfter, transactionDateBefore)
+
+        return transactions
+            .filter(predicate)
+            .map { transactionMapper.toResponseDto(it) }
+    }
+
+    private fun getUserLocation(): UserLocationEntity =
+        userLocationRepository.findByUserIdAndEndOnNull(SessionContextProvider.getUserId())
+            ?: throw RuntimeException("User location not found")
 
     fun createTransaction(transactionInsertDto: TransactionInsertDto): TransactionResponseDto {
         if(contactCache.getAllContacts().find { it.id == transactionInsertDto.userId } == null){
