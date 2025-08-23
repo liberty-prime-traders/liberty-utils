@@ -39,7 +39,7 @@ class TransactionEndpoint(private val transactionService: TransactionService) {
         @PathParam("endDate") endDate: String
     ): Collection<TransactionResponseDto> {
 
-        return transactionService.getTransactionsForTrasactionDate(startDate, endDate)
+        return transactionService.getTransactionsForTransactionDate(startDate, endDate)
     }
 
     @DeleteMapping("{id}")

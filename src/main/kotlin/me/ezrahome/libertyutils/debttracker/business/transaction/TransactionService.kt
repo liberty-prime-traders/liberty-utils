@@ -29,7 +29,7 @@ class TransactionService(
     }
 
     @Transactional(readOnly = true)
-    fun getTransactionsForTrasactionDate(startDate: String, endDate: String): Collection<TransactionResponseDto> {
+    fun getTransactionsForTransactionDate(startDate: String, endDate: String): Collection<TransactionResponseDto> {
         val transactionDateAfter = LocalDate.parse(startDate)
         val transactionDateBefore = LocalDate.parse(endDate)
         val currentLocation = getUserLocation()
