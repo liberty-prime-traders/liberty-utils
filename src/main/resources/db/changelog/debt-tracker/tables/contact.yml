@@ -1,0 +1,39 @@
+databaseChangeLog:
+
+  - changeSet:
+      id: 'add-contact-table'
+      author: kenneth
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            - tableExists:
+                tableName: contact
+      changes:
+        - createTable:
+            tableName: contact
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  defaultValueComputed: ${uuid_function}
+                  constraints:
+                    primaryKey: true
+
+              - column:
+                  name: full_name
+                  type: nvarchar2(100)
+                  constraints:
+                    nullable: false
+                    notNullConstraintName: contact_full_name_notnull
+
+              - column:
+                  name: contact_type
+                  type: nvarchar2(50)
+
+              - column:
+                  name: email
+                  type: nvarchar2(50)
+
+              - column:
+                  name: phone_number
+                  type: nvarchar2(50)
