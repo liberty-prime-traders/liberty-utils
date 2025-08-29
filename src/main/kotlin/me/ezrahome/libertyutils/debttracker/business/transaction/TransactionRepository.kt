@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import org.springframework.stereotype.Repository
 import java.math.BigDecimal
+import java.time.LocalDate
 import java.util.UUID
 
 interface UserBalanceProjection {
@@ -14,6 +15,7 @@ interface UserBalanceProjection {
 
 @Repository
 interface TransactionRepository: JpaRepository<TransactionEntity, UUID> {
+    fun findTransactionsByTransactionDateBetween(transactionDateAfter: LocalDate, transactionDateBefore: LocalDate): List<TransactionEntity>
 
     @Query(
         "select t.userId as userId, " +
