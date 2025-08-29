@@ -1,10 +1,10 @@
 package me.ezrahome.libertyutils.debttracker.business.contact.mapping
 
+import me.ezrahome.libertyutils.configuration.mapping.MapperConfig
 import me.ezrahome.libertyutils.debttracker.business.contact.dto.ContactInsertDto
 import me.ezrahome.libertyutils.debttracker.business.contact.dto.ContactResponseDto
 import me.ezrahome.libertyutils.debttracker.business.contact.dto.ContactUpdateDto
 import me.ezrahome.libertyutils.debttracker.model.ContactEntity
-import me.ezrahome.libertyutils.platform.configuration.mapping.MapperConfig
 import org.mapstruct.BeanMapping
 import org.mapstruct.Mapper
 import org.mapstruct.Mapping

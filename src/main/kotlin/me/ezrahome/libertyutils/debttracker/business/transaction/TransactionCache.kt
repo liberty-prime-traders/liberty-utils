@@ -1,7 +1,7 @@
 package me.ezrahome.libertyutils.debttracker.business.transaction
 
+import me.ezrahome.libertyutils.configuration.cache.CacheNames
 import me.ezrahome.libertyutils.debttracker.model.TransactionEntity
-import me.ezrahome.libertyutils.platform.configuration.cache.CacheNames
 import org.springframework.cache.annotation.CacheConfig
 import org.springframework.cache.annotation.CacheEvict
 import org.springframework.cache.annotation.Cacheable

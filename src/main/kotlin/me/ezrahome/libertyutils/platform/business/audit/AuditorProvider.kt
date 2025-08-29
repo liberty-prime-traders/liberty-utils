@@ -1,6 +1,6 @@
 package me.ezrahome.libertyutils.platform.business.audit
 
-import me.ezrahome.libertyutils.platform.configuration.session.SessionContextProvider
+import me.ezrahome.libertyutils.configuration.session.SessionContextProvider
 import org.springframework.context.annotation.Configuration
 import org.springframework.data.domain.AuditorAware
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing

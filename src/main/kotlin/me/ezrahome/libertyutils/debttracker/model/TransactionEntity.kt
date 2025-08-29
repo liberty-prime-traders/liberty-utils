@@ -6,9 +6,10 @@ import jakarta.persistence.EnumType
 import jakarta.persistence.Enumerated
 import jakarta.persistence.Table
 import jakarta.validation.constraints.NotNull
-import me.ezrahome.libertyutils.dailysnapshot.model.LibertyLocation
-import me.ezrahome.libertyutils.platform.constants.TableNames
-import me.ezrahome.libertyutils.platform.model.AuditableEntity
+import me.ezrahome.libertyutils.platform.business.user_location.HasLibertyLocation
+import me.ezrahome.libertyutils.reusable.model.LibertyLocation
+import me.ezrahome.libertyutils.reusable.constants.TableNames
+import me.ezrahome.libertyutils.reusable.model.AuditableEntity
 import org.hibernate.annotations.ColumnDefault
 import java.util.UUID
 import java.time.LocalDate
@@ -37,6 +38,6 @@ class TransactionEntity(
 
     @Column(name = "location", updatable = false)
     @Enumerated(EnumType.STRING)
-    var location: LibertyLocation? = null
+    override var location: LibertyLocation? = null
 
-) : AuditableEntity()
+) : AuditableEntity(), HasLibertyLocation

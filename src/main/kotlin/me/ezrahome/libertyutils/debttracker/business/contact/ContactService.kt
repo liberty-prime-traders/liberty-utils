@@ -4,7 +4,7 @@ import me.ezrahome.libertyutils.debttracker.business.contact.dto.ContactInsertDt
 import me.ezrahome.libertyutils.debttracker.business.contact.dto.ContactUpdateDto
 import me.ezrahome.libertyutils.debttracker.business.contact.dto.ContactResponseDto
 import me.ezrahome.libertyutils.debttracker.business.contact.mapping.ContactMapper
-import me.ezrahome.libertyutils.platform.utils.StringUtils
+import me.ezrahome.libertyutils.reusable.StringUtils
 import org.springframework.stereotype.Service
 import java.util.Objects
 import java.util.UUID

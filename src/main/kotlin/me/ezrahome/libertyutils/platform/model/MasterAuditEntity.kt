@@ -5,7 +5,8 @@ import jakarta.persistence.Entity
 import jakarta.persistence.Table
 import jakarta.validation.constraints.NotNull
 import jakarta.validation.constraints.Size
-import me.ezrahome.libertyutils.platform.constants.TableNames
+import me.ezrahome.libertyutils.reusable.constants.TableNames
+import me.ezrahome.libertyutils.reusable.model.BaseEntity
 import org.hibernate.annotations.CreationTimestamp
 import org.springframework.data.annotation.CreatedBy
 import java.time.OffsetDateTime

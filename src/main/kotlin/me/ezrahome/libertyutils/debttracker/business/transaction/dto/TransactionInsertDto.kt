@@ -1,6 +1,6 @@
 package me.ezrahome.libertyutils.debttracker.business.transaction.dto
 
-import me.ezrahome.libertyutils.dailysnapshot.model.LibertyLocation
+import me.ezrahome.libertyutils.reusable.model.LibertyLocation
 import me.ezrahome.libertyutils.debttracker.model.TransactionType
 import java.io.Serializable
 import java.math.BigDecimal

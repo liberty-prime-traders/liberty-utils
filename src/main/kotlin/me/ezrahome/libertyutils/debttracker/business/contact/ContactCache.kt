@@ -1,6 +1,6 @@
 package me.ezrahome.libertyutils.debttracker.business.contact
 
-import me.ezrahome.libertyutils.platform.configuration.cache.CacheNames
+import me.ezrahome.libertyutils.configuration.cache.CacheNames
 import me.ezrahome.libertyutils.debttracker.model.ContactEntity
 import org.springframework.cache.annotation.CacheConfig
 import org.springframework.cache.annotation.CacheEvict

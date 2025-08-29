@@ -1,13 +1,13 @@
 package me.ezrahome.libertyutils.debttracker.business.transaction
 
+import me.ezrahome.libertyutils.configuration.mapping.ContactName
+import me.ezrahome.libertyutils.configuration.mapping.MapperConfig
 import me.ezrahome.libertyutils.debttracker.business.contact.mapping.ContactBalance
 import me.ezrahome.libertyutils.debttracker.business.contact.mapping.ContactBalanceQualifier
 import me.ezrahome.libertyutils.debttracker.business.transaction.dto.TransactionInsertDto
 import me.ezrahome.libertyutils.debttracker.business.transaction.dto.TransactionResponseDto
 import me.ezrahome.libertyutils.debttracker.business.transaction.dto.TransactionUpdateDto
 import me.ezrahome.libertyutils.debttracker.model.TransactionEntity
-import me.ezrahome.libertyutils.platform.configuration.mapping.ContactName
-import me.ezrahome.libertyutils.platform.configuration.mapping.MapperConfig
 import org.mapstruct.BeanMapping
 import org.mapstruct.Mapper
 import org.mapstruct.Mapping

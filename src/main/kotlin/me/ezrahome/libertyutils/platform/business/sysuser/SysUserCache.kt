@@ -2,7 +2,7 @@ package me.ezrahome.libertyutils.platform.business.sysuser
 
 import com.okta.sdk.client.Client
 import com.okta.sdk.resource.user.UserList
-import me.ezrahome.libertyutils.platform.configuration.cache.CacheNames
+import me.ezrahome.libertyutils.configuration.cache.CacheNames
 import me.ezrahome.libertyutils.platform.model.SysUserEntity
 import org.springframework.cache.annotation.CacheConfig
 import org.springframework.cache.annotation.CacheEvict

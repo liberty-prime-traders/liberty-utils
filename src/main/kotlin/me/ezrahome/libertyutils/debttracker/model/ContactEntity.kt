@@ -4,8 +4,8 @@ import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.Table
 import jakarta.validation.constraints.NotNull
-import me.ezrahome.libertyutils.platform.constants.TableNames
-import me.ezrahome.libertyutils.platform.model.AuditableEntity
+import me.ezrahome.libertyutils.reusable.constants.TableNames
+import me.ezrahome.libertyutils.reusable.model.AuditableEntity
 
 @Entity
 @Table(name = TableNames.CONTACT)
