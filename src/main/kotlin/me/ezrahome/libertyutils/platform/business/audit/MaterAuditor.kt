@@ -3,8 +3,8 @@ package me.ezrahome.libertyutils.platform.business.audit
 import jakarta.persistence.Column
 import jakarta.persistence.EntityManager
 import jakarta.persistence.Table
-import me.ezrahome.libertyutils.platform.configuration.session.SessionContextProvider
-import me.ezrahome.libertyutils.platform.model.AuditableEntity
+import me.ezrahome.libertyutils.configuration.session.SessionContextProvider
+import me.ezrahome.libertyutils.reusable.model.AuditableEntity
 import me.ezrahome.libertyutils.platform.model.MasterAuditEntity
 import org.springframework.stereotype.Component
 import java.lang.reflect.Field

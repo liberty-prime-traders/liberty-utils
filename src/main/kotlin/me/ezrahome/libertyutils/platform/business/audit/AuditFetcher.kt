@@ -1,8 +1,8 @@
 package me.ezrahome.libertyutils.platform.business.audit
 
 import jakarta.persistence.Column
-import me.ezrahome.libertyutils.platform.configuration.mapping.UserQualifier
-import me.ezrahome.libertyutils.platform.model.AuditableEntity
+import me.ezrahome.libertyutils.configuration.mapping.UserQualifier
+import me.ezrahome.libertyutils.reusable.model.AuditableEntity
 import org.springframework.stereotype.Component
 import java.io.InvalidObjectException
 import java.util.UUID

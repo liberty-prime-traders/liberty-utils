@@ -5,7 +5,8 @@ import jakarta.persistence.Entity
 import jakarta.persistence.Table
 import jakarta.validation.constraints.NotNull
 import jakarta.validation.constraints.Size
-import me.ezrahome.libertyutils.platform.constants.TableNames
+import me.ezrahome.libertyutils.reusable.constants.TableNames
+import me.ezrahome.libertyutils.reusable.model.BaseEntity
 
 @Entity
 @Table(name = TableNames.SYS_USER)

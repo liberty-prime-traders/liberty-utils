@@ -1,7 +1,7 @@
 package me.ezrahome.libertyutils.platform.business.sysuser
 
 import com.okta.sdk.resource.user.User
-import me.ezrahome.libertyutils.platform.configuration.mapping.MapperConfig
+import me.ezrahome.libertyutils.configuration.mapping.MapperConfig
 import org.mapstruct.Context
 import org.mapstruct.Mapper
 import org.mapstruct.Mapping

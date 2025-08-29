@@ -6,9 +6,10 @@ import jakarta.persistence.EnumType
 import jakarta.persistence.Enumerated
 import jakarta.persistence.Table
 import me.ezrahome.libertyutils.platform.business.audit.AuditIgnore
-import me.ezrahome.libertyutils.platform.business.audit.UiLabel
-import me.ezrahome.libertyutils.platform.constants.TableNames
-import me.ezrahome.libertyutils.platform.model.AuditableEntity
+import me.ezrahome.libertyutils.platform.business.user_location.HasLibertyLocation
+import me.ezrahome.libertyutils.reusable.constants.TableNames
+import me.ezrahome.libertyutils.reusable.model.AuditableEntity
+import me.ezrahome.libertyutils.reusable.model.LibertyLocation
 import org.hibernate.annotations.ColumnDefault
 import org.hibernate.annotations.CreationTimestamp
 import java.math.BigDecimal
@@ -30,49 +31,40 @@ class DailySnapshotEntity(
 
     @ColumnDefault("0")
     @Column(name = "start_balance_cash")
-    @UiLabel("Starting Balance")
     var startBalanceCash: BigDecimal? = null,
 
     @ColumnDefault("0")
     @Column(name = "end_balance_cash")
-    @UiLabel("Ending Balance")
     var endBalanceCash: BigDecimal? = null,
 
     @ColumnDefault("0")
     @Column(name = "outflow_cash")
-    @UiLabel("Cash Outflow")
     var outflowCash: BigDecimal? = null,
 
     @Column(name = "cogs")
-    @UiLabel("COGS")
     var cogs: BigDecimal? = null,
 
     @Column(name = "cogs_returned")
-    @UiLabel("COGS Returned")
     var cogsReturned: BigDecimal? = null,
 
     @Column(name = "expenses")
-    @UiLabel("Expenses")
     var expenses: BigDecimal? = null,
 
     @ColumnDefault("0")
     @Column(name = "inflow_joint_account")
-    @UiLabel("Joint Account Inflow")
     var inflowJointAccount: BigDecimal? = null,
 
     @ColumnDefault("0")
     @Column(name = "inflow_personal_account")
-    @UiLabel("Personal Account Inflow")
     var inflowPersonalAccount: BigDecimal? = null,
 
     @ColumnDefault("0")
     @Column(name = "inflow_credit_sales")
-    @UiLabel("Credit Sales")
     var inflowCreditSales: BigDecimal? = null,
 
     @Column(name = "location", updatable = false)
     @Enumerated(EnumType.STRING)
-    var location: LibertyLocation? = null,
+    override var location: LibertyLocation? = null,
 
     @ColumnDefault("0")
     @Column(name = "transaction_costs")
@@ -82,4 +74,4 @@ class DailySnapshotEntity(
     @Column(name = "relay_sales")
     var relaySales: BigDecimal? = null
 
-): AuditableEntity()
+): AuditableEntity(), HasLibertyLocation

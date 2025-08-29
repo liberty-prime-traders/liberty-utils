@@ -1,6 +1,6 @@
 package me.ezrahome.libertyutils.platform.business.sysuser
 
-import me.ezrahome.libertyutils.platform.configuration.session.SessionContextProvider
+import me.ezrahome.libertyutils.configuration.session.SessionContextProvider
 import me.ezrahome.libertyutils.platform.model.SysUserEntity
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
