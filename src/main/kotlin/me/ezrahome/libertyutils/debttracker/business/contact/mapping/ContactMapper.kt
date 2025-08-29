@@ -1,4 +1,4 @@
-package me.ezrahome.libertyutils.debttracker.business.contact
+package me.ezrahome.libertyutils.debttracker.business.contact.mapping
 
 import me.ezrahome.libertyutils.debttracker.business.contact.dto.ContactInsertDto
 import me.ezrahome.libertyutils.debttracker.business.contact.dto.ContactResponseDto
@@ -11,9 +11,10 @@ import org.mapstruct.Mapping
 import org.mapstruct.MappingTarget
 import org.mapstruct.NullValuePropertyMappingStrategy
 
-@Mapper(config = MapperConfig::class)
+@Mapper(config = MapperConfig::class, uses = [ContactBalanceQualifier::class])
 interface ContactMapper {
 
+    @Mapping(target = "balance", source = "id", qualifiedBy = [ContactBalance::class])
     fun toResponseDto(entity: ContactEntity): ContactResponseDto
 
     @Mapping(target = "id", ignore = true)

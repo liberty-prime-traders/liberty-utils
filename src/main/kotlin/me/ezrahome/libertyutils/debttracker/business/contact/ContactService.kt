@@ -3,6 +3,7 @@ package me.ezrahome.libertyutils.debttracker.business.contact
 import me.ezrahome.libertyutils.debttracker.business.contact.dto.ContactInsertDto
 import me.ezrahome.libertyutils.debttracker.business.contact.dto.ContactUpdateDto
 import me.ezrahome.libertyutils.debttracker.business.contact.dto.ContactResponseDto
+import me.ezrahome.libertyutils.debttracker.business.contact.mapping.ContactMapper
 import me.ezrahome.libertyutils.platform.utils.StringUtils
 import org.springframework.stereotype.Service
 import java.util.Objects
@@ -12,11 +13,16 @@ import java.util.UUID
 @Service
 class ContactService(
     private val contactMapper: ContactMapper,
-    private val contactCache: ContactCache
+    private val contactCache: ContactCache,
+    private val contactBalanceCache: ContactBalanceCache
 ) {
 
     fun getAllContacts(): Collection<ContactResponseDto> {
-        return contactCache.getAllContacts().map { contactMapper.toResponseDto(it) }
+        return contactCache.getAllContacts().map { entity ->
+            val dto = contactMapper.toResponseDto(entity)
+            dto.balance = contactBalanceCache.getBalance(entity.id)
+            dto
+        }
     }
 
     fun createContact(contactInsertDto: ContactInsertDto): ContactResponseDto {

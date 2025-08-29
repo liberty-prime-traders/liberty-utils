@@ -12,6 +12,7 @@ data class TransactionResponseDto (
     var id: UUID? = null,
     var userId: UUID? = null,
     var contactName: String? = null,
+    var contactBalance: BigDecimal? = null,
     var transactionType: TransactionType? = null,
     var transactionDate: String? = null,
     var amount: BigDecimal? = null,
