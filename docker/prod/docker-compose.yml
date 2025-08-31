@@ -8,6 +8,7 @@ services:
       CORS_PATTERNS: "${CORS_PATTERNS}"
       DB_DOMAIN: "${DB_DOMAIN}"
       DB_NAME: "${DB_NAME}"
+      DB_PORT: "${DB_PORT}"
       DB_PASSWORD: "${DB_PASSWORD}"
       DB_USERNAME: "${DB_USERNAME}"
       OKTA_CLIENT_ID: "${OKTA_CLIENT_ID}"
