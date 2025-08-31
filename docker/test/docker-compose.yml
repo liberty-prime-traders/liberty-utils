@@ -1,0 +1,25 @@
+services:
+
+  liberty-utils-server:
+    image: ezraorina834/liberty-utils-server:test
+    container_name: liberty-utils-server-test
+    restart: unless-stopped
+    environment:
+      CORS_PATTERNS: "${CORS_PATTERNS}"
+      DB_DOMAIN: "${DB_DOMAIN}"
+      DB_NAME: "${DB_NAME}"
+      DB_PASSWORD: "${DB_PASSWORD}"
+      DB_USERNAME: "${DB_USERNAME}"
+      OKTA_CLIENT_ID: "${OKTA_CLIENT_ID}"
+      OKTA_CLIENT_SECRET: "${OKTA_CLIENT_SECRET}"
+      OKTA_DOMAIN: "${OKTA_DOMAIN}"
+      PORT: "${PORT}"
+      SHOW_SQL: "${SHOW_SQL}"
+      OKTA_API_TOKEN: "${OKTA_API_TOKEN}"
+
+    networks:
+      - ezra-home
+
+networks:
+  ezra-home:
+    external: true
