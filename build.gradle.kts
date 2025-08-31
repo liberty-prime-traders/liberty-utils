@@ -22,7 +22,7 @@ jib {
 		}
 	}
 	to {
-		image = "ezraorina834/liberty-utils-server${project.findProperty("imageTag") ?: "latest"}"
+		image = "ezraorina834/liberty-utils-server:${project.findProperty("imageTag") ?: "latest"}"
 		tags = setOf(version.toString())
 	}
 }
