@@ -6,7 +6,6 @@ import me.ezrahome.libertyutils.dailysnapshot.business.DailySnapshotResponseDto
 import me.ezrahome.libertyutils.dailysnapshot.business.DailySnapshotService
 import me.ezrahome.libertyutils.dailysnapshot.business.DailySnapshotUpdateDto
 import me.ezrahome.libertyutils.platform.business.audit.MasterAuditDto
-import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -17,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import java.util.UUID
 
-@CrossOrigin
 @RestController
 @RequestMapping("secured/snapshot")
 class DailySnapshotEndpoint(private val dailySnapshotService: DailySnapshotService) {
