@@ -1,9 +1,10 @@
-package me.ezrahome.libertyutils.platform.rest.sysuser
+package me.ezrahome.libertyutils.dailysnapshot.rest
 
-import me.ezrahome.libertyutils.configuration.security.LibertyRoles
-import me.ezrahome.libertyutils.platform.business.user_location.UserLocationInsertDto
-import me.ezrahome.libertyutils.platform.business.user_location.UserLocationResponseDto
-import me.ezrahome.libertyutils.platform.business.user_location.UserLocationService
+
+import me.ezrahome.libertyutils.dailysnapshot.business.user_location.UserLocationInsertDto
+import me.ezrahome.libertyutils.dailysnapshot.business.user_location.UserLocationResponseDto
+import me.ezrahome.libertyutils.dailysnapshot.business.user_location.UserLocationService
+import me.ezrahome.libertyutils.platform.configuration.security.LibertyRoles
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
