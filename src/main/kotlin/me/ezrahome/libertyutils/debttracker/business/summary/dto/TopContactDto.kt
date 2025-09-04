@@ -4,7 +4,7 @@ import java.math.BigDecimal
 import java.time.LocalDate
 import java.util.UUID
 
-data class TopUserDto(
+data class TopContactDto(
     val id: UUID,
     val name: String?,
     val amount: BigDecimal,

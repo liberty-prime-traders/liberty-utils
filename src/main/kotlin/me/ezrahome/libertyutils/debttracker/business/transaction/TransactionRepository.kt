@@ -1,8 +1,7 @@
 package me.ezrahome.libertyutils.debttracker.business.transaction
 
 import me.ezrahome.libertyutils.debttracker.business.summary.dto.LatestTransactionsDto
-import me.ezrahome.libertyutils.debttracker.business.summary.dto.StatsDto
-import me.ezrahome.libertyutils.debttracker.business.summary.dto.TopUserDto
+import me.ezrahome.libertyutils.debttracker.business.summary.dto.TopContactDto
 import me.ezrahome.libertyutils.debttracker.model.TransactionEntity
 import me.ezrahome.libertyutils.debttracker.model.TransactionType
 import org.springframework.data.domain.Pageable
@@ -48,18 +47,7 @@ interface TransactionRepository: JpaRepository<TransactionEntity, UUID> {
     fun findLatestTransactions(pageable: Pageable): List<LatestTransactionsDto>
 
     @Query("""
-        SELECT new me.ezrahome.libertyutils.debttracker.business.summary.dto.StatsDto (
-            COALESCE(SUM(CASE WHEN t.transactionType = me.ezrahome.libertyutils.debttracker.model.TransactionType.DEBIT THEN t.amount ELSE 0 END), 0),
-            COALESCE(SUM(CASE WHEN t.transactionType = me.ezrahome.libertyutils.debttracker.model.TransactionType.CREDIT THEN t.amount ELSE 0 END), 0),
-            COUNT(DISTINCT CASE WHEN t.transactionType = me.ezrahome.libertyutils.debttracker.model.TransactionType.DEBIT THEN t.userId ELSE NULL END),
-            COUNT(DISTINCT CASE WHEN t.transactionType = me.ezrahome.libertyutils.debttracker.model.TransactionType.CREDIT THEN t.userId ELSE NULL END)
-        )
-        FROM TransactionEntity t
-    """)
-    fun getSummaryStats(): StatsDto
-
-    @Query("""
-        SELECT new me.ezrahome.libertyutils.debttracker.business.summary.dto.TopUserDto (
+        SELECT new me.ezrahome.libertyutils.debttracker.business.summary.dto.TopContactDto (
             t.userId,
             c.fullName,
             SUM(t.amount),
@@ -71,5 +59,5 @@ interface TransactionRepository: JpaRepository<TransactionEntity, UUID> {
         GROUP BY t.userId, c.fullName
         ORDER BY SUM(t.amount) DESC
     """)
-    fun findTopUsersByType(type: TransactionType, pageable: Pageable): List<TopUserDto>
+    fun findTopUsersByType(type: TransactionType, pageable: Pageable): List<TopContactDto>
 }
