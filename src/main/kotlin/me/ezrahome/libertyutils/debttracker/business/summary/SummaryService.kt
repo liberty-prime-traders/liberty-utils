@@ -3,43 +3,79 @@ package me.ezrahome.libertyutils.debttracker.business.summary
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import me.ezrahome.libertyutils.debttracker.business.contact.ContactCache
+import me.ezrahome.libertyutils.debttracker.business.contact.ContactNetStandingCache
 import me.ezrahome.libertyutils.debttracker.business.summary.dto.SummaryDto
+import me.ezrahome.libertyutils.debttracker.business.summary.dto.TopContactDto
 import me.ezrahome.libertyutils.debttracker.business.transaction.TransactionCache
-import me.ezrahome.libertyutils.debttracker.model.TransactionType
+import me.ezrahome.libertyutils.debttracker.business.transaction.mapping.TransactionMapper
+import me.ezrahome.libertyutils.debttracker.model.ContactEntity
+import me.ezrahome.libertyutils.platform.business.user_location.UserLocationUtils
 import org.springframework.stereotype.Service
 import java.math.BigDecimal
-import java.time.LocalTime
-import java.time.format.DateTimeFormatter
+import java.time.OffsetDateTime
 
 @Service
 class SummaryService (
     private val contactCache: ContactCache,
-    private val transactionCache: TransactionCache
+    private val transactionCache: TransactionCache,
+    private val contactNetStandingCache: ContactNetStandingCache,
+    private val transactionMapper: TransactionMapper,
+    private val userLocationUtils: UserLocationUtils
 ) {
-    private final val formatter = DateTimeFormatter.ofPattern("h:mm:ss a")
     suspend fun generateDashboardSummary(): SummaryDto = coroutineScope {
-        val summaryStats = async { transactionCache.getAllTransactions() }
-        val latestTransactions = async { transactionCache.getLatestTransactions() }
-        val totalContacts = async { contactCache.getAllContacts().count() }
-        val topDebtors = async { transactionCache.findTopUsersByType(TransactionType.DEBIT) }
-        val topCreditors = async { transactionCache.findTopUsersByType(TransactionType.CREDIT) }
+        val latestTransactionDeferred = async { transactionCache.getLatestTransactions(userLocationUtils.getLocations()) }
+        val contactsDeferred = async { contactCache.getAllContacts() }
 
-        val stats = summaryStats.await()
-        val debtors = stats.filter { it.transactionType == TransactionType.DEBIT }
-        val creditors = stats.filter { it.transactionType == TransactionType.CREDIT }
-        val time = LocalTime.now()
+        val contacts = contactsDeferred.await()
+        val standingsByContact: Map<ContactEntity, BigDecimal> = contacts.associateWith { contactNetStandingCache.getNetStanding(it.id) }
+        val contactHasNegativeStanding = { amount: BigDecimal -> amount < BigDecimal.ZERO }
+        val contactHasPositiveStanding = { amount: BigDecimal -> amount > BigDecimal.ZERO }
 
+        val totalDebtors = standingsByContact.values.count(contactHasNegativeStanding)
+        val totalCreditors = standingsByContact.values.count (contactHasPositiveStanding)
+
+        val topDebtors = buildTopList(standingsByContact, contactHasNegativeStanding)
+        val topCreditors = buildTopList(standingsByContact, contactHasPositiveStanding)
+
+        val totalOwedToMe = standingsByContact.values.filter(contactHasNegativeStanding)
+            .fold(BigDecimal.ZERO, BigDecimal::add)
+            .abs()
+        val totalOwedByMe = standingsByContact.values.filter(contactHasPositiveStanding)
+            .fold(BigDecimal.ZERO, BigDecimal::add)
+            .abs()
+            .negate()
+        val myNetStanding = totalOwedToMe.add(totalOwedByMe)
+
+        val latestTransactions = latestTransactionDeferred.await().map { transactionMapper.toResponseDto(it) }
 
         SummaryDto(
-            timeFetched = time.format(formatter),
-            latestTransactions = latestTransactions.await(),
-            totalContacts = totalContacts.await(),
-            totalDebtors = debtors.map { it.userId }.toSet().count(),
-            totalCreditors = creditors.map { it.userId }.toSet().count(),
-            totalDebt = debtors.mapNotNull { it.amount }.fold(BigDecimal.ZERO, BigDecimal::add),
-            totalCredit = creditors.mapNotNull { it.amount }.fold(BigDecimal.ZERO, BigDecimal::add),
-            topDebtors = topDebtors.await(),
-            topCreditors = topCreditors.await()
+            timeFetched = OffsetDateTime.now(),
+            latestTransactions = latestTransactions,
+            totalDebtors = totalDebtors,
+            totalCreditors = totalCreditors,
+            totalOwedToMe = totalOwedToMe,
+            totalOwedByMe = totalOwedByMe,
+            myNetStanding = myNetStanding,
+            topDebtors = topDebtors,
+            topCreditors = topCreditors
         )
+    }
+
+    private fun buildTopList(
+        balancesByContact: Map<ContactEntity, BigDecimal>,
+        balancePredicate: (BigDecimal) -> Boolean
+    ): List<TopContactDto> {
+
+        return balancesByContact.filterValues(balancePredicate).toList()
+            .sortedByDescending { it.second.abs() }
+            .take(5)
+            .map { (contact, balance) ->
+                TopContactDto(
+                    id = contact.id!!,
+                    fullName = contact.fullName,
+                    contactType = contact.contactType,
+                    amount = balance
+                )
+            }
     }
 }

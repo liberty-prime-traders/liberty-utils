@@ -1,20 +1,18 @@
 package me.ezrahome.libertyutils.debttracker.business.transaction
 
 import me.ezrahome.libertyutils.configuration.security.LibertyPermissions
-import me.ezrahome.libertyutils.debttracker.business.contact.ContactBalanceCache
+import me.ezrahome.libertyutils.debttracker.business.contact.ContactNetStandingCache
 import me.ezrahome.libertyutils.debttracker.business.contact.ContactCache
 import me.ezrahome.libertyutils.debttracker.business.transaction.dto.TransactionDto
 import me.ezrahome.libertyutils.debttracker.business.transaction.dto.TransactionInsertDto
 import me.ezrahome.libertyutils.debttracker.business.transaction.dto.TransactionResponseDto
 import me.ezrahome.libertyutils.debttracker.business.transaction.dto.TransactionUpdateDto
+import me.ezrahome.libertyutils.debttracker.business.transaction.mapping.TransactionMapper
 import me.ezrahome.libertyutils.debttracker.model.TransactionEntity
-import me.ezrahome.libertyutils.debttracker.model.TransactionType
 import me.ezrahome.libertyutils.platform.business.user_location.UserLocationUtils
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.math.BigDecimal
 import java.time.LocalDate
-import java.util.Objects
 import java.util.UUID
 
 @Transactional
@@ -24,16 +22,9 @@ class TransactionService(
     private val transactionCache: TransactionCache,
     private val contactCache: ContactCache,
     private val userLocationUtils: UserLocationUtils,
-    private val contactBalanceCache: ContactBalanceCache,
+    private val contactNetStandingCache: ContactNetStandingCache,
     private val transactionRepository: TransactionRepository,
 ) {
-
-    @Transactional(readOnly = true)
-    fun getAllTransactions(): Collection<TransactionResponseDto> {
-        return transactionCache.getAllTransactions()
-            .filter { userLocationUtils.locationPredicate(it) }
-            .map { transactionMapper.toResponseDto(it) }
-    }
 
     @Transactional(readOnly = true)
     fun getTransactionsForTransactionDate(startDate: String, endDate: String): Collection<TransactionResponseDto> {
@@ -51,8 +42,11 @@ class TransactionService(
         val newTransactionEntity = transactionMapper.toEntity(transactionInsertDto)
         populateLocation(newTransactionEntity)
         transactionCache.upsertTransaction(newTransactionEntity)
-        val delta = getChangeInOverallBalance(null,TransactionDto(newTransactionEntity.amount, newTransactionEntity.transactionType))
-        contactBalanceCache.adjust(newTransactionEntity.userId, delta)
+        contactNetStandingCache.adjust(
+            newTransactionEntity.userId,
+            null,
+            TransactionDto(newTransactionEntity.amount, newTransactionEntity.transactionType, newTransactionEntity.location)
+        )
         return transactionMapper.toResponseDto(newTransactionEntity)
     }
 
@@ -66,45 +60,25 @@ private fun populateLocation(entity: TransactionEntity) {
     }
 
     fun updateTransaction(updatedTransactionDto: TransactionUpdateDto): TransactionResponseDto {
-        val existingTransaction = transactionCache.getAllTransactions().find { Objects.equals(updatedTransactionDto.id, it.id) }
+        val existingTransaction = transactionCache.getTransactionById(updatedTransactionDto.id)
             ?: throw RuntimeException("Transaction not found")
 
-        val oldTransaction = TransactionDto(existingTransaction.amount, existingTransaction.transactionType)
+        val oldTransaction = TransactionDto(existingTransaction.amount, existingTransaction.transactionType, existingTransaction.location)
         val newTransaction = TransactionDto(
             updatedTransactionDto.amount?.orElse(existingTransaction.amount),
-            updatedTransactionDto.transactionType?.orElse(existingTransaction.transactionType)
+            updatedTransactionDto.transactionType?.orElse(existingTransaction.transactionType),
+            existingTransaction.location
         )
-        val changeInBalance = getChangeInOverallBalance(oldTransaction, newTransaction)
-        contactBalanceCache.adjust(existingTransaction.userId, changeInBalance)
+        contactNetStandingCache.adjust(existingTransaction.userId, oldTransaction, newTransaction)
         transactionMapper.partialUpdate(updatedTransactionDto, existingTransaction)
         transactionCache.upsertTransaction(existingTransaction)
         return transactionMapper.toResponseDto(existingTransaction)
     }
     
-    fun deleteTransaction(id: UUID?) {
-        val txn = transactionCache.getAllTransactions().find { it.id == id }
-            ?: throw RuntimeException("Transaction not found")
-        val delta = getChangeInOverallBalance(TransactionDto(txn.amount, txn.transactionType), null)
-        contactBalanceCache.adjust(txn.userId, delta)
-        transactionCache.deleteTransaction(id!!)
+    fun deleteTransaction(id: UUID) {
+        val txn = transactionCache.getTransactionById(id) ?: throw RuntimeException("Transaction not found")
+        contactNetStandingCache.adjust(txn.userId, TransactionDto(txn.amount, txn.transactionType, txn.location), null)
+        transactionCache.deleteTransaction(id)
     }
 
-    private fun getChangeInOverallBalance(oldTransaction: TransactionDto?, newTransaction: TransactionDto?): BigDecimal {
-        val oldAmount = oldTransaction?.amount ?: BigDecimal.ZERO
-        val newAmount = newTransaction?.amount ?: BigDecimal.ZERO
-
-        val oldChange = when (oldTransaction?.transactionType) {
-            TransactionType.DEBIT -> oldAmount
-            TransactionType.CREDIT -> oldAmount.negate()
-            else -> BigDecimal.ZERO
-        }
-
-        val newChange = when (newTransaction?.transactionType) {
-            TransactionType.DEBIT -> newAmount
-            TransactionType.CREDIT -> newAmount.negate()
-            else -> BigDecimal.ZERO
-        }
-
-        return newChange.minus(oldChange)
-    }
 }

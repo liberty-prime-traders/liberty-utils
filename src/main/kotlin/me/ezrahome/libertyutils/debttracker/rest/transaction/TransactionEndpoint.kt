@@ -28,9 +28,6 @@ class TransactionEndpoint(private val transactionService: TransactionService) {
         return transactionService.updateTransaction(transactionUpdateDto)
     }
 
-    @GetMapping
-    fun getAllTransactions(): Collection<TransactionResponseDto> = transactionService.getAllTransactions()
-
     @GetMapping(params = ["startDate", "endDate"])
     fun getTransactionsBetweenDates(
         @PathParam("startDate") startDate: String,
@@ -41,7 +38,7 @@ class TransactionEndpoint(private val transactionService: TransactionService) {
     }
 
     @DeleteMapping("{id}")
-    fun deleteTransaction(@PathVariable("id") id: UUID?) {
-        transactionService.deleteTransaction(id!!)
+    fun deleteTransaction(@PathVariable("id") id: UUID) {
+        transactionService.deleteTransaction(id)
     }
 }
