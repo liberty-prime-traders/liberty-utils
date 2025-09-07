@@ -14,13 +14,13 @@ import java.util.UUID
 class ContactService(
     private val contactMapper: ContactMapper,
     private val contactCache: ContactCache,
-    private val contactBalanceCache: ContactBalanceCache
+    private val contactNetStandingCache: ContactNetStandingCache
 ) {
 
     fun getAllContacts(): Collection<ContactResponseDto> {
         return contactCache.getAllContacts().map { entity ->
             val dto = contactMapper.toResponseDto(entity)
-            dto.balance = contactBalanceCache.getBalance(entity.id)
+            dto.balance = contactNetStandingCache.getNetStanding(entity.id)
             dto
         }
     }

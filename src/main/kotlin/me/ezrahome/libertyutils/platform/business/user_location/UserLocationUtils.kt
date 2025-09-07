@@ -9,14 +9,21 @@ import org.springframework.stereotype.Component
 class UserLocationUtils(private val userLocationCache: UserLocationCache) {
 
     val locationPredicate: (HasLibertyLocation) -> Boolean = { locationAwareEntity ->
-        LibertyPermissions.isLibertyAdmin() || locationAwareEntity.location == getUserLocation()
+        LibertyPermissions.isLibertyAdmin() || locationAwareEntity.location == getUserLocationFromContext()
     }
 
     fun populateLocation(entity: HasLibertyLocation) {
-        entity.location = getUserLocation()
+        entity.location = getUserLocationFromContext()
     }
 
-    private fun getUserLocation(): LibertyLocation =
+    fun getLocations(): Set<LibertyLocation> {
+        if (LibertyPermissions.isLibertyAdmin()) {
+            return LibertyLocation.entries.toSet()
+        }
+        return setOf(getUserLocationFromContext())
+    }
+
+    private fun getUserLocationFromContext(): LibertyLocation =
         userLocationCache.findAllActiveUserLocations()
             .find { it.userId == SessionContextProvider.getUserId() }
             ?.location
