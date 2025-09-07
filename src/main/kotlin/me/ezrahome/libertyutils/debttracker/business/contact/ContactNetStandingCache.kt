@@ -4,6 +4,7 @@ import jakarta.annotation.PostConstruct
 import me.ezrahome.libertyutils.debttracker.business.transaction.TransactionRepository
 import me.ezrahome.libertyutils.debttracker.business.transaction.dto.TransactionDto
 import me.ezrahome.libertyutils.debttracker.model.TransactionType
+import me.ezrahome.libertyutils.platform.business.user_location.UserLocationUtils
 import me.ezrahome.libertyutils.reusable.model.LibertyLocation
 import org.springframework.stereotype.Service
 import java.math.BigDecimal
@@ -13,7 +14,7 @@ import java.util.concurrent.ConcurrentHashMap
 @Service
 class ContactNetStandingCache(
     private val transactionRepository: TransactionRepository,
-    private val userLocationUtils: me.ezrahome.libertyutils.platform.business.user_location.UserLocationUtils
+    private val userLocationUtils: UserLocationUtils
 ) {
     private val netStandingsByLocation: MutableMap<LibertyLocation, MutableMap<UUID, BigDecimal>> = ConcurrentHashMap()
 
