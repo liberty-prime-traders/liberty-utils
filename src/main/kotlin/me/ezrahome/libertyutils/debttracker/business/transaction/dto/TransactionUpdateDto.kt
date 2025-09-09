@@ -7,7 +7,7 @@ import java.util.Optional
 import java.util.UUID
 
 data class TransactionUpdateDto (
-    var id: UUID? = null,
+    var id: UUID,
     var transactionType: Optional<TransactionType>? = null,
     var transactionDate: Optional<LocalDate>? = null,
     var amount: Optional<BigDecimal>? = null,
