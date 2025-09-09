@@ -2,6 +2,8 @@ package me.ezrahome.libertyutils.debttracker.model
 
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
+import jakarta.persistence.EnumType
+import jakarta.persistence.Enumerated
 import jakarta.persistence.Table
 import jakarta.validation.constraints.NotNull
 import me.ezrahome.libertyutils.reusable.constants.TableNames
@@ -15,6 +17,7 @@ class ContactEntity(
     var fullName: String? = null,
 
     @Column(name = "contact_type")
+    @Enumerated(EnumType.STRING)
     var contactType: ContactType? = null,
 
     @Column(name = "email")
