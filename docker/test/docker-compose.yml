@@ -1,6 +1,6 @@
 services:
 
-  liberty-utils-server:
+  liberty-utils-server-test:
     image: ezraorina834/liberty-utils-server:test
     container_name: liberty-utils-server-test
     restart: unless-stopped
