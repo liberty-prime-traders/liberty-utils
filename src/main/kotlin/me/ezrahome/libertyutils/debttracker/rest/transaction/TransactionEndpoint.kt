@@ -37,6 +37,13 @@ class TransactionEndpoint(private val transactionService: TransactionService) {
         return transactionService.getTransactionsForTransactionDate(startDate, endDate)
     }
 
+    @GetMapping(params = ["userId"])
+    fun getLast5Transactions(
+        @PathParam("userId") userId: UUID,
+    ): Collection<TransactionResponseDto> {
+        return transactionService.getContactLast5Transactions(userId)
+    }
+
     @DeleteMapping("{id}")
     fun deleteTransaction(@PathVariable("id") id: UUID) {
         transactionService.deleteTransaction(id)
