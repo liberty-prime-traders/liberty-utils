@@ -3,6 +3,7 @@ package me.ezrahome.libertyutils.debttracker.business.transaction
 import me.ezrahome.libertyutils.configuration.security.LibertyPermissions
 import me.ezrahome.libertyutils.debttracker.business.contact.ContactNetStandingCache
 import me.ezrahome.libertyutils.debttracker.business.contact.ContactCache
+import me.ezrahome.libertyutils.debttracker.business.daily.DailyBalanceCache
 import me.ezrahome.libertyutils.debttracker.business.transaction.dto.TransactionDto
 import me.ezrahome.libertyutils.debttracker.business.transaction.dto.TransactionInsertDto
 import me.ezrahome.libertyutils.debttracker.business.transaction.dto.TransactionResponseDto
@@ -23,6 +24,7 @@ class TransactionService(
     private val contactCache: ContactCache,
     private val userLocationUtils: UserLocationUtils,
     private val contactNetStandingCache: ContactNetStandingCache,
+    private val dailyBalanceCache: DailyBalanceCache,
     private val transactionRepository: TransactionRepository,
 ) {
 
@@ -42,11 +44,17 @@ class TransactionService(
         val newTransactionEntity = transactionMapper.toEntity(transactionInsertDto)
         populateLocation(newTransactionEntity)
         transactionCache.upsertTransaction(newTransactionEntity)
-        contactNetStandingCache.adjust(
-            newTransactionEntity.userId,
-            null,
-            TransactionDto(newTransactionEntity.amount, newTransactionEntity.transactionType, newTransactionEntity.location)
+        
+        val transactionDto = TransactionDto(
+            newTransactionEntity.amount, 
+            newTransactionEntity.transactionType, 
+            newTransactionEntity.location,
+            newTransactionEntity.transactionDate
         )
+        
+        contactNetStandingCache.adjust(newTransactionEntity.userId, null, transactionDto)
+        dailyBalanceCache.adjust(null, transactionDto)
+        
         return transactionMapper.toResponseDto(newTransactionEntity)
     }
 
@@ -63,13 +71,20 @@ private fun populateLocation(entity: TransactionEntity) {
         val existingTransaction = transactionCache.getTransactionById(updatedTransactionDto.id)
             ?: throw RuntimeException("Transaction not found")
 
-        val oldTransaction = TransactionDto(existingTransaction.amount, existingTransaction.transactionType, existingTransaction.location)
+        val oldTransaction = TransactionDto(
+            existingTransaction.amount, 
+            existingTransaction.transactionType, 
+            existingTransaction.location,
+            existingTransaction.transactionDate
+        )
         val newTransaction = TransactionDto(
             updatedTransactionDto.amount?.orElse(existingTransaction.amount),
             updatedTransactionDto.transactionType?.orElse(existingTransaction.transactionType),
-            existingTransaction.location
+            existingTransaction.location,
+            existingTransaction.transactionDate
         )
         contactNetStandingCache.adjust(existingTransaction.userId, oldTransaction, newTransaction)
+        dailyBalanceCache.adjust(oldTransaction, newTransaction)
         transactionMapper.partialUpdate(updatedTransactionDto, existingTransaction)
         transactionCache.upsertTransaction(existingTransaction)
         return transactionMapper.toResponseDto(existingTransaction)
@@ -77,7 +92,9 @@ private fun populateLocation(entity: TransactionEntity) {
     
     fun deleteTransaction(id: UUID) {
         val txn = transactionCache.getTransactionById(id) ?: throw RuntimeException("Transaction not found")
-        contactNetStandingCache.adjust(txn.userId, TransactionDto(txn.amount, txn.transactionType, txn.location), null)
+        val transactionDto = TransactionDto(txn.amount, txn.transactionType, txn.location, txn.transactionDate)
+        contactNetStandingCache.adjust(txn.userId, transactionDto, null)
+        dailyBalanceCache.adjust(transactionDto, null)
         transactionCache.deleteTransaction(id)
     }
 
