@@ -33,4 +33,6 @@ interface TransactionRepository: JpaRepository<TransactionEntity, UUID> {
     fun findAllUserBalancesByLocations(locations: Set<LibertyLocation>): List<UserBalanceProjection>
 
     fun findByLocationInOrderByTransactionDateDesc(locations: Set<LibertyLocation>, pageable: Pageable): List<TransactionEntity>
+
+    fun findTop5ByUserIdOrderByTransactionDateDesc(userId: UUID): List<TransactionEntity>
 }

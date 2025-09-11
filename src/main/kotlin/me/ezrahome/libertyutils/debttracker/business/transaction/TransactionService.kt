@@ -81,4 +81,9 @@ private fun populateLocation(entity: TransactionEntity) {
         transactionCache.deleteTransaction(id)
     }
 
+    fun getContactLast5Transactions(id: UUID): List<TransactionResponseDto> {
+        return transactionCache
+            .getLast5Transactions(id)
+            .map { transactionMapper.toResponseDto(it) }
+    }
 }
