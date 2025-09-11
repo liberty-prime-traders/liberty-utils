@@ -24,6 +24,10 @@ class TransactionCache(
     fun getLatestTransactions(locations: Set<LibertyLocation>): List<TransactionEntity> =
         transactionRepository.findByLocationInOrderByTransactionDateDesc(locations, PageRequest.of(0, 5))
 
+    @Cacheable
+    fun getLast5Transactions(userId: UUID): List<TransactionEntity> =
+        transactionRepository.findTop5ByUserIdOrderByTransactionDateDesc(userId)
+
     @CacheEvict(allEntries = true)
     fun upsertTransaction(transactionEntity: TransactionEntity): TransactionEntity =
         transactionRepository.save(transactionEntity)
