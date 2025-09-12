@@ -12,9 +12,7 @@ import java.util.UUID
 
 @Service
 @CacheConfig(cacheNames = [CacheNames.TRANSACTION])
-class TransactionCache(
-    private val transactionRepository: TransactionRepository,
-) {
+class TransactionCache(private val transactionRepository: TransactionRepository) {
 
     @Cacheable
     fun getTransactionById(id: UUID): TransactionEntity? =
