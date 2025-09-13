@@ -11,7 +11,6 @@ import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import org.springframework.web.server.ResponseStatusException
 import java.util.Collections
-import kotlin.collections.map
 
 
 @Service
@@ -30,7 +29,7 @@ class SysUserCache(
     @Cacheable
     fun getUsersFromOkta(): UserList {
         try {
-            return oktaClient.listUsers()
+            return oktaClient.listUsers("", "", "status pr", "", "")
         } catch (e: Exception) {
             throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Unable to fetch users from Okta", e)
         }
