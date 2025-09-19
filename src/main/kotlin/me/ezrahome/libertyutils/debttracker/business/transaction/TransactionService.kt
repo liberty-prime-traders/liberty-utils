@@ -1,9 +1,9 @@
 package me.ezrahome.libertyutils.debttracker.business.transaction
 
 import me.ezrahome.libertyutils.configuration.security.LibertyPermissions
-import me.ezrahome.libertyutils.debttracker.business.contact.ContactNetStandingCache
 import me.ezrahome.libertyutils.debttracker.business.contact.ContactCache
-import me.ezrahome.libertyutils.debttracker.business.daily.DailyBalanceCache
+import me.ezrahome.libertyutils.debttracker.business.contact.ContactNetStandingCache
+import me.ezrahome.libertyutils.debttracker.business.dailysummary.DailyDebtSummaryCache
 import me.ezrahome.libertyutils.debttracker.business.transaction.dto.TransactionDto
 import me.ezrahome.libertyutils.debttracker.business.transaction.dto.TransactionInsertDto
 import me.ezrahome.libertyutils.debttracker.business.transaction.dto.TransactionResponseDto
@@ -24,7 +24,7 @@ class TransactionService(
     private val contactCache: ContactCache,
     private val userLocationUtils: UserLocationUtils,
     private val contactNetStandingCache: ContactNetStandingCache,
-    private val dailyBalanceCache: DailyBalanceCache,
+    private val dailyDebtSummaryCache: DailyDebtSummaryCache,
     private val transactionRepository: TransactionRepository,
 ) {
 
@@ -32,7 +32,7 @@ class TransactionService(
     fun getTransactionsForTransactionDate(startDate: String, endDate: String): Collection<TransactionResponseDto> {
         val transactionDateAfter = LocalDate.parse(startDate)
         val transactionDateBefore = LocalDate.parse(endDate)
-        return transactionRepository.findTransactionsByTransactionDateBetween(transactionDateAfter, transactionDateBefore)
+        return transactionRepository.findByTransactionDateBetween(transactionDateAfter, transactionDateBefore)
             .filter { userLocationUtils.locationPredicate(it) }
             .map { transactionMapper.toResponseDto(it) }
     }
@@ -53,7 +53,7 @@ class TransactionService(
         )
         
         contactNetStandingCache.adjust(newTransactionEntity.userId, null, transactionDto)
-        dailyBalanceCache.adjust(null, transactionDto)
+        dailyDebtSummaryCache.adjust(null, transactionDto)
         
         return transactionMapper.toResponseDto(newTransactionEntity)
     }
@@ -84,7 +84,7 @@ private fun populateLocation(entity: TransactionEntity) {
             existingTransaction.transactionDate
         )
         contactNetStandingCache.adjust(existingTransaction.userId, oldTransaction, newTransaction)
-        dailyBalanceCache.adjust(oldTransaction, newTransaction)
+        dailyDebtSummaryCache.adjust(oldTransaction, newTransaction)
         transactionMapper.partialUpdate(updatedTransactionDto, existingTransaction)
         transactionCache.upsertTransaction(existingTransaction)
         return transactionMapper.toResponseDto(existingTransaction)
@@ -94,7 +94,7 @@ private fun populateLocation(entity: TransactionEntity) {
         val txn = transactionCache.getTransactionById(id) ?: throw RuntimeException("Transaction not found")
         val transactionDto = TransactionDto(txn.amount, txn.transactionType, txn.location, txn.transactionDate)
         contactNetStandingCache.adjust(txn.userId, transactionDto, null)
-        dailyBalanceCache.adjust(transactionDto, null)
+        dailyDebtSummaryCache.adjust(transactionDto, null)
         transactionCache.deleteTransaction(id)
     }
 

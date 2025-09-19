@@ -1,4 +1,4 @@
-package me.ezrahome.libertyutils.debttracker.business.summary.dto
+package me.ezrahome.libertyutils.debttracker.business.dashboardsummary
 
 import me.ezrahome.libertyutils.debttracker.model.ContactType
 import java.math.BigDecimal

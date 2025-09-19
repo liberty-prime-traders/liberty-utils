@@ -9,5 +9,5 @@ data class TransactionDto(
     val amount: BigDecimal?,
     val transactionType: TransactionType?,
     val location: LibertyLocation?,
-    val transactionDate: LocalDate? = null
+    val transactionDate: LocalDate?
 )
