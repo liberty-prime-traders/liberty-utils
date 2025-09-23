@@ -3,7 +3,6 @@ package me.ezrahome.libertyutils.debttracker.business.transaction
 import me.ezrahome.libertyutils.configuration.security.LibertyPermissions
 import me.ezrahome.libertyutils.debttracker.business.contact.ContactCache
 import me.ezrahome.libertyutils.debttracker.business.contact.ContactNetStandingCache
-import me.ezrahome.libertyutils.debttracker.business.dailysummary.DailyDebtSummaryCache
 import me.ezrahome.libertyutils.debttracker.business.transaction.dto.TransactionDto
 import me.ezrahome.libertyutils.debttracker.business.transaction.dto.TransactionInsertDto
 import me.ezrahome.libertyutils.debttracker.business.transaction.dto.TransactionResponseDto
@@ -13,7 +12,6 @@ import me.ezrahome.libertyutils.debttracker.model.TransactionEntity
 import me.ezrahome.libertyutils.platform.business.user_location.UserLocationUtils
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.time.LocalDate
 import java.util.UUID
 
 @Transactional
@@ -24,14 +22,14 @@ class TransactionService(
     private val contactCache: ContactCache,
     private val userLocationUtils: UserLocationUtils,
     private val contactNetStandingCache: ContactNetStandingCache,
-    private val dailyDebtSummaryCache: DailyDebtSummaryCache,
     private val transactionRepository: TransactionRepository,
+    private val dailyDebtSummaryCache: me.ezrahome.libertyutils.debttracker.business.dailysummary.DailyDebtSummaryCache
 ) {
 
     @Transactional(readOnly = true)
     fun getTransactionsForTransactionDate(startDate: String, endDate: String): Collection<TransactionResponseDto> {
-        val transactionDateAfter = LocalDate.parse(startDate)
-        val transactionDateBefore = LocalDate.parse(endDate)
+        val transactionDateAfter = java.time.LocalDate.parse(startDate)
+        val transactionDateBefore = java.time.LocalDate.parse(endDate)
         return transactionRepository.findByTransactionDateBetween(transactionDateAfter, transactionDateBefore)
             .filter { userLocationUtils.locationPredicate(it) }
             .map { transactionMapper.toResponseDto(it) }
@@ -81,7 +79,7 @@ private fun populateLocation(entity: TransactionEntity) {
             updatedTransactionDto.amount?.orElse(existingTransaction.amount),
             updatedTransactionDto.transactionType?.orElse(existingTransaction.transactionType),
             existingTransaction.location,
-            existingTransaction.transactionDate
+            updatedTransactionDto.transactionDate?.orElse(existingTransaction.transactionDate)
         )
         contactNetStandingCache.adjust(existingTransaction.userId, oldTransaction, newTransaction)
         dailyDebtSummaryCache.adjust(oldTransaction, newTransaction)
