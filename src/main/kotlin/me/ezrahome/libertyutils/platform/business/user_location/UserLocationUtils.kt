@@ -23,10 +23,14 @@ class UserLocationUtils(private val userLocationCache: UserLocationCache) {
         return setOf(getUserLocationFromContext())
     }
 
-    private fun getUserLocationFromContext(): LibertyLocation =
-        userLocationCache.findAllActiveUserLocations()
+    private fun getUserLocationFromContext(): LibertyLocation {
+        if (LibertyPermissions.isLibertyAdmin()) {
+            return LibertyLocation.ELDORET
+        }
+        return userLocationCache.findAllActiveUserLocations()
             .find { it.userId == SessionContextProvider.getUserId() }
             ?.location
             ?: throw RuntimeException("User location not found")
+    }
 
 }

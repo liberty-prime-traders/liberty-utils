@@ -21,10 +21,18 @@ class AuthFilter(private val sysUserCache: SysUserCache,): OncePerRequestFilter(
             chain.doFilter(request, response)
             return
         }
+        val disableAuth = System.getenv("DISABLE_AUTH")?.equals("true", ignoreCase = true) == true
+
         val authentication = SecurityContextHolder.getContext().authentication
-        val jwt = authentication.principal as Jwt
+        val jwt = authentication?.principal as? Jwt
+
         val sessionContext = SessionContextProvider.getSession()
-        sessionContext.oktaId = jwt.claims[OKTA_ID_KEY] as String
+        if (jwt != null) {
+            sessionContext.oktaId = jwt.claims[OKTA_ID_KEY] as String
+        } else if (disableAuth) {
+            val headerOktaId = request.getHeader("X-Okta-Id")
+            sessionContext.oktaId = headerOktaId ?: "dev-okta-id"
+        }
         initializeSystemUserId(sessionContext)
 
         try {

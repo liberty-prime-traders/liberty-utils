@@ -1,10 +1,10 @@
-package me.ezrahome.libertyutils.debttracker.business.summary.dto
+package me.ezrahome.libertyutils.debttracker.business.dashboardsummary
 
 import me.ezrahome.libertyutils.debttracker.business.transaction.dto.TransactionResponseDto
 import java.math.BigDecimal
 import java.time.OffsetDateTime
 
-data class SummaryDto(
+data class DashboardSummaryDto(
     val timeFetched: OffsetDateTime,
     val latestTransactions: List<TransactionResponseDto>,
     val totalDebtors: Number,

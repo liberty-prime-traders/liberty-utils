@@ -1,11 +1,9 @@
-package me.ezrahome.libertyutils.debttracker.business.summary
+package me.ezrahome.libertyutils.debttracker.business.dashboardsummary
 
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import me.ezrahome.libertyutils.debttracker.business.contact.ContactCache
 import me.ezrahome.libertyutils.debttracker.business.contact.ContactNetStandingCache
-import me.ezrahome.libertyutils.debttracker.business.summary.dto.SummaryDto
-import me.ezrahome.libertyutils.debttracker.business.summary.dto.TopContactDto
 import me.ezrahome.libertyutils.debttracker.business.transaction.TransactionCache
 import me.ezrahome.libertyutils.debttracker.business.transaction.mapping.TransactionMapper
 import me.ezrahome.libertyutils.debttracker.model.ContactEntity
@@ -15,14 +13,14 @@ import java.math.BigDecimal
 import java.time.OffsetDateTime
 
 @Service
-class SummaryService (
+class DashboardSummaryService (
     private val contactCache: ContactCache,
     private val transactionCache: TransactionCache,
     private val contactNetStandingCache: ContactNetStandingCache,
     private val transactionMapper: TransactionMapper,
     private val userLocationUtils: UserLocationUtils
 ) {
-    suspend fun generateDashboardSummary(): SummaryDto = coroutineScope {
+    suspend fun generateDashboardSummary(): DashboardSummaryDto = coroutineScope {
         val latestTransactionDeferred = async { transactionCache.getLatestTransactions(userLocationUtils.getLocations()) }
         val contactsDeferred = async { contactCache.getAllContacts() }
 
@@ -48,7 +46,7 @@ class SummaryService (
 
         val latestTransactions = latestTransactionDeferred.await().map { transactionMapper.toResponseDto(it) }
 
-        SummaryDto(
+        DashboardSummaryDto(
             timeFetched = OffsetDateTime.now(),
             latestTransactions = latestTransactions,
             totalDebtors = totalDebtors,
