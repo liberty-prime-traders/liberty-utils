@@ -75,15 +75,24 @@ private fun populateLocation(entity: TransactionEntity) {
             existingTransaction.location,
             existingTransaction.transactionDate
         )
+        val targetLocation = if (LibertyPermissions.isLibertyAdmin()) {
+            updatedTransactionDto.location?.orElse(existingTransaction.location)
+        } else {
+            existingTransaction.location
+        }
+
         val newTransaction = TransactionDto(
             updatedTransactionDto.amount?.orElse(existingTransaction.amount),
             updatedTransactionDto.transactionType?.orElse(existingTransaction.transactionType),
-            existingTransaction.location,
+            targetLocation,
             updatedTransactionDto.transactionDate?.orElse(existingTransaction.transactionDate)
         )
         contactNetStandingCache.adjust(existingTransaction.userId, oldTransaction, newTransaction)
         dailyDebtSummaryCache.adjust(oldTransaction, newTransaction)
+        // Apply field updates
         transactionMapper.partialUpdate(updatedTransactionDto, existingTransaction)
+        // Persist location change explicitly (mapper ignores location by design)
+        existingTransaction.location = targetLocation
         transactionCache.upsertTransaction(existingTransaction)
         return transactionMapper.toResponseDto(existingTransaction)
     }

@@ -18,21 +18,34 @@ class SecurityConfiguration {
     @Bean
     @Throws(Exception::class)
     fun filterChain(http: HttpSecurity): SecurityFilterChain {
-        return http
+        val disableAuth = System.getenv("DISABLE_AUTH")?.equals("true", ignoreCase = true) == true
+
+        val authConfigurer = http
             .authorizeHttpRequests {
                 it.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                    .requestMatchers("/secured/**").authenticated()
-                    .anyRequest().permitAll()
+                if (disableAuth) {
+                    it.requestMatchers("/secured/**").permitAll()
+                } else {
+                    it.requestMatchers("/secured/**").authenticated()
+                }
+                it.anyRequest().permitAll()
             }
             .csrf { it.disable() }
             .cors(Customizer.withDefaults())
-            .oauth2ResourceServer { it.jwt(Customizer.withDefaults()) }
-            .build()
+
+        if (!disableAuth) {
+            authConfigurer.oauth2ResourceServer { it.jwt(Customizer.withDefaults()) }
+        }
+
+        return authConfigurer.build()
     }
 
     @Bean
     fun corsConfigurationSource(): CorsConfigurationSource {
-        val originPatterns = System.getenv("CORS_PATTERNS")?.split(",") ?: listOf()
+        val originPatterns = System.getenv("CORS_PATTERNS")?.split(",")
+            ?.filter { it.isNotBlank() }
+            ?.map { it.trim() }
+            ?: listOf("http://localhost:3200")
         val configuration = CorsConfiguration().apply {
             this.allowedOriginPatterns = originPatterns
             this.allowedMethods = listOf("GET", "POST", "PUT", "DELETE", "OPTIONS")

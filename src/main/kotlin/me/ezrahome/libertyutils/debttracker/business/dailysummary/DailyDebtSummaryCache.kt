@@ -75,41 +75,44 @@ class DailyDebtSummaryCache(private val transactionRepository: TransactionReposi
     }
     
     fun adjust(oldTransaction: TransactionDto?, newTransaction: TransactionDto?) {
-        val oldDate = oldTransaction?.transactionDate
-        val newDate = newTransaction?.transactionDate
-        val oldLocation = oldTransaction?.location
-        val newLocation = newTransaction?.location
-
-        if (oldDate != null && oldLocation != null) {
-            adjustForTransaction(oldLocation, oldDate, oldTransaction, isRemoval = true)
+        // Remove effect of old transaction (edit/delete)
+        if (oldTransaction?.transactionDate != null && oldTransaction.location != null) {
+            adjustForTransaction(oldTransaction, isRemoval = true)
         }
-
-        if (newDate != null && newLocation != null) {
-            adjustForTransaction(newLocation, newDate, newTransaction, isRemoval = false)
+        // Apply effect of new transaction (insert/edit)
+        if (newTransaction?.transactionDate != null && newTransaction.location != null) {
+            adjustForTransaction(newTransaction, isRemoval = false)
         }
     }
 
     private fun adjustForTransaction(
-        location: LibertyLocation,
-        date: LocalDate,
         transaction: TransactionDto,
         isRemoval: Boolean
     ) {
+        val location = requireNotNull(transaction.location)
+        val date = requireNotNull(transaction.transactionDate)
+        val amount = transaction.amount ?: BigDecimal.ZERO
+        val txType = transaction.transactionType
+
         val locationMap = getMutable(location)
         val existingSummary = locationMap[date] ?: DailyDebtSummary(date, BigDecimal.ZERO, BigDecimal.ZERO)
-        val amount = transaction.amount
-        val multiplier = if (isRemoval) BigDecimal(-1) else BigDecimal(1)
+        val signedAmount = if (isRemoval) amount.negate() else amount
 
-        val updatedSummary = when (transaction.transactionType) {
+        val updatedSummary = when (txType) {
             TransactionType.DEBIT -> existingSummary.copy(
-                debtIssued = existingSummary.debtIssued.add(amount?.multiply(multiplier))
+                debtIssued = existingSummary.debtIssued.add(signedAmount)
             )
             TransactionType.CREDIT -> existingSummary.copy(
-                debtCleared = existingSummary.debtCleared.add(amount?.multiply(multiplier))
+                debtCleared = existingSummary.debtCleared.add(signedAmount)
             )
             else -> existingSummary
         }
 
-        locationMap[date] = updatedSummary
+        // Remove entry when both totals are zero; otherwise set updated
+        if (updatedSummary.debtCleared == BigDecimal.ZERO && updatedSummary.debtIssued == BigDecimal.ZERO) {
+            locationMap.remove(date)
+        } else {
+            locationMap[date] = updatedSummary
+        }
     }
 }
