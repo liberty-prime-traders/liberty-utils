@@ -52,7 +52,7 @@ class ContactNetStandingCache(
             netStandingsByLocation.computeIfAbsent(oldLoc) { ConcurrentHashMap() }
                 .compute(userId) { _, existing ->
                     val current = existing ?: BigDecimal.ZERO
-                    current.add(oldDelta.negate())
+                    current.add(oldDelta)
                 }
         }
         if (newLoc != null) {
