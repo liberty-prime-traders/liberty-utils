@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import java.time.LocalDate
 import java.util.UUID
 
 @RestController
@@ -28,20 +29,14 @@ class TransactionEndpoint(private val transactionService: TransactionService) {
         return transactionService.updateTransaction(transactionUpdateDto)
     }
 
-    @GetMapping(params = ["startDate", "endDate"])
-    fun getTransactionsBetweenDates(
-        @PathParam("startDate") startDate: String,
-        @PathParam("endDate") endDate: String
-    ): Collection<TransactionResponseDto> {
-
-        return transactionService.getTransactionsForTransactionDate(startDate, endDate)
+    @PostMapping("fetch-by-date")
+    fun getTransactionsBetweenDates(@RequestBody dates: Collection<LocalDate>):  Map<String, Collection<TransactionResponseDto>> {
+        return transactionService.getTransactionsForTransactionDates(dates).asMap()
     }
 
     @GetMapping(params = ["userId"])
-    fun getLast5Transactions(
-        @PathParam("userId") userId: UUID,
-    ): Collection<TransactionResponseDto> {
-        return transactionService.getContactLast5Transactions(userId)
+    fun getLast5Transactions(@PathParam("userId") userId: UUID): Map<UUID, Collection<TransactionResponseDto>> {
+        return transactionService.getContactLast5Transactions(userId).asMap()
     }
 
     @DeleteMapping("{id}")

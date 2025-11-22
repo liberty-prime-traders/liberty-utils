@@ -18,7 +18,7 @@ interface UserBalanceProjection {
 @Repository
 interface TransactionRepository: JpaRepository<TransactionEntity, UUID> {
 
-    fun findTransactionsByTransactionDateBetween(transactionDateAfter: LocalDate, transactionDateBefore: LocalDate): List<TransactionEntity>
+    fun findTransactionsByTransactionDateIn(transactionDates: Collection<LocalDate>): List<TransactionEntity>
 
     @Query(
         "select t.userId as userId, " +

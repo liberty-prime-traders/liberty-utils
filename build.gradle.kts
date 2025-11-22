@@ -42,6 +42,9 @@ configurations {
 repositories {
 	mavenCentral()
 	gradlePluginPortal()
+    maven {
+        url = uri("https://repo.enonic.com/public/")
+    }
 }
 
 dependencies {
@@ -69,6 +72,7 @@ dependencies {
 	implementation("org.reactivestreams:reactive-streams:1.0.4")
 	implementation("org.springframework.boot:spring-boot-starter-webflux")
 	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
+    implementation("com.google.common:google-collect:0.5")
 }
 
 kotlin {

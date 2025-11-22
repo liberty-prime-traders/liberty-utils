@@ -1,5 +1,7 @@
 package me.ezrahome.libertyutils.debttracker.business.transaction
 
+import com.google.common.collect.HashMultimap
+import com.google.common.collect.Multimap
 import me.ezrahome.libertyutils.configuration.security.LibertyPermissions
 import me.ezrahome.libertyutils.debttracker.business.contact.ContactNetStandingCache
 import me.ezrahome.libertyutils.debttracker.business.contact.ContactCache
@@ -10,6 +12,7 @@ import me.ezrahome.libertyutils.debttracker.business.transaction.dto.Transaction
 import me.ezrahome.libertyutils.debttracker.business.transaction.mapping.TransactionMapper
 import me.ezrahome.libertyutils.debttracker.model.TransactionEntity
 import me.ezrahome.libertyutils.platform.business.user_location.UserLocationUtils
+import me.ezrahome.libertyutils.reusable.classes.BatchExecutor
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDate
@@ -27,12 +30,15 @@ class TransactionService(
 ) {
 
     @Transactional(readOnly = true)
-    fun getTransactionsForTransactionDate(startDate: String, endDate: String): Collection<TransactionResponseDto> {
-        val transactionDateAfter = LocalDate.parse(startDate)
-        val transactionDateBefore = LocalDate.parse(endDate)
-        return transactionRepository.findTransactionsByTransactionDateBetween(transactionDateAfter, transactionDateBefore)
+    fun getTransactionsForTransactionDates(dates: Collection<LocalDate>): Multimap<String,TransactionResponseDto> {
+        val result = HashMultimap<String, TransactionResponseDto>()
+        BatchExecutor.findAllBySomeKeyIn(dates, transactionRepository::findTransactionsByTransactionDateIn)
             .filter { userLocationUtils.locationPredicate(it) }
-            .map { transactionMapper.toResponseDto(it) }
+            .forEach {
+                val transactionDto = transactionMapper.toResponseDto(it)
+                result.put(transactionDto.transactionDate!!, transactionDto)
+            }
+        return result
     }
 
     fun createTransaction(transactionInsertDto: TransactionInsertDto): TransactionResponseDto {
@@ -81,8 +87,11 @@ private fun populateLocation(entity: TransactionEntity) {
         transactionCache.deleteTransaction(id)
     }
 
-    fun getContactLast5Transactions(userId: UUID): List<TransactionResponseDto> {
-        return transactionCache.getLast5Transactions(userId)
+    fun getContactLast5Transactions(userId: UUID): Multimap<UUID, TransactionResponseDto> {
+        val result = HashMultimap<UUID, TransactionResponseDto>()
+        val transactions = transactionCache.getLast5Transactions(userId)
             .map { transactionMapper.toResponseDto(it) }
+        result.putAll(userId, transactions)
+        return result
     }
 }
