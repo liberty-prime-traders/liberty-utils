@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-docker compose --env-file test.env up -d
+docker compose --env-file test.env up -d "$@"
