@@ -5,7 +5,6 @@ import me.ezrahome.libertyutils.debttracker.business.contact.dto.ContactInsertDt
 import me.ezrahome.libertyutils.debttracker.business.contact.dto.ContactResponseDto
 import me.ezrahome.libertyutils.debttracker.business.contact.dto.ContactUpdateDto
 import me.ezrahome.libertyutils.debttracker.model.DeleteResponse
-import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -34,13 +33,11 @@ class ContactsEndpoint(private val contactService: ContactService) {
     fun getAllUsers(): Collection<ContactResponseDto> = contactService.getAllContacts()
     
     @DeleteMapping("{id}")
-    fun deleteUser(@PathVariable("id") id: UUID?): ResponseEntity<DeleteResponse> {
+    fun deleteUser(@PathVariable id: UUID?): DeleteResponse {
         contactService.deleteContact(id!!)
-        val response = DeleteResponse(
+        return DeleteResponse(
             id = id,
             deletedOn = Instant.now()
         )
-
-        return ResponseEntity.ok(response)
     }
 }

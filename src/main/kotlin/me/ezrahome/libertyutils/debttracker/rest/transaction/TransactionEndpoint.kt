@@ -6,7 +6,6 @@ import me.ezrahome.libertyutils.debttracker.business.transaction.dto.Transaction
 import me.ezrahome.libertyutils.debttracker.business.transaction.dto.TransactionResponseDto
 import me.ezrahome.libertyutils.debttracker.business.transaction.dto.TransactionUpdateDto
 import me.ezrahome.libertyutils.debttracker.model.DeleteResponse
-import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -43,13 +42,11 @@ class TransactionEndpoint(private val transactionService: TransactionService) {
     }
 
     @DeleteMapping("{id}")
-    fun deleteTransaction(@PathVariable("id") id: UUID): ResponseEntity<DeleteResponse> {
+    fun deleteTransaction(@PathVariable id: UUID): DeleteResponse {
         transactionService.deleteTransaction(id)
-        val response = DeleteResponse(
+        return DeleteResponse(
             id = id,
             deletedOn = Instant.now()
         )
-
-        return ResponseEntity.ok(response)
     }
 }
