@@ -28,6 +28,7 @@ services:
 
     networks:
       - ezra-home
+      - default
 
     depends_on:
       - postgres-liberty-utils
