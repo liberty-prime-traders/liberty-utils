@@ -1,8 +1,9 @@
-services:
+include:
+  - postgres-compose.yml
 
-  liberty-utils-server-test:
-    image: ezraorina834/liberty-utils-server:test
-    container_name: liberty-utils-server-test
+services:
+  liberty-utils-server:
+    image: ezraorina834/liberty-utils-server:${APP_VERSION}
     restart: unless-stopped
     environment:
       CORS_PATTERNS: "${CORS_PATTERNS}"
@@ -18,8 +19,18 @@ services:
       SHOW_SQL: "${SHOW_SQL}"
       OKTA_API_TOKEN: "${OKTA_API_TOKEN}"
 
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.liberty-${ENV}.rule=Host(`liberty-utils-server-${ENV}.ezra-home.me`)"
+      - "traefik.http.routers.liberty-${ENV}.entrypoints=websecure"
+      - "traefik.http.routers.liberty-${ENV}.tls=true"
+      - "traefik.http.services.liberty-${ENV}.loadbalancer.server.port=${PORT}"
+
     networks:
       - ezra-home
+
+    depends_on:
+      - postgres-liberty-utils
 
 networks:
   ezra-home:

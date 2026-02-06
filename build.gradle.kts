@@ -13,13 +13,7 @@ version = "0.0.1"
 
 jib {
 	from {
-		image = "arm32v7/eclipse-temurin:17-jre"
-		platforms {
-			platform {
-				architecture = "arm"
-				os = "linux"
-			}
-		}
+		image = "eclipse-temurin:17-jre"
 	}
 	to {
 		image = "ezraorina834/liberty-utils-server:${project.findProperty("imageTag") ?: "latest"}"

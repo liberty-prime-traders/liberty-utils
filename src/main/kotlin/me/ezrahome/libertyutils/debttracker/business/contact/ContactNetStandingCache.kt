@@ -65,21 +65,17 @@ class ContactNetStandingCache(
     }
 
     private fun getChangeInOverallStanding(oldTransaction: TransactionDto?, newTransaction: TransactionDto?): BigDecimal {
-        val oldAmount = oldTransaction?.amount ?: BigDecimal.ZERO
-        val newAmount = newTransaction?.amount ?: BigDecimal.ZERO
-
-        val oldNetValue = when (oldTransaction?.transactionType) {
-            TransactionType.DEBIT -> oldAmount.negate()
-            TransactionType.CREDIT -> oldAmount
-            else -> BigDecimal.ZERO
-        }
-
-        val newNetValue = when (newTransaction?.transactionType) {
-            TransactionType.DEBIT -> newAmount.negate()
-            TransactionType.CREDIT -> newAmount
-            else -> BigDecimal.ZERO
-        }
-
+        val oldNetValue = getNetChange(oldTransaction)
+        val newNetValue = getNetChange(newTransaction)
         return newNetValue.minus(oldNetValue)
+    }
+
+    private fun getNetChange(transaction: TransactionDto?): BigDecimal {
+        val amount = transaction?.amount ?: BigDecimal.ZERO
+        return when (transaction?.transactionType) {
+            TransactionType.DEBIT -> amount.negate()
+            TransactionType.CREDIT -> amount
+            else -> BigDecimal.ZERO
+        }
     }
 }
