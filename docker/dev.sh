@@ -1,3 +1,9 @@
 #!/usr/bin/env bash
 
-docker compose --env-file dev.env up -d "$@"
+ACTION="${1:-up}"  # default to up
+
+if [[ "$ACTION" == "down" ]]; then
+  docker compose --env-file dev.env down
+else
+  docker compose --env-file dev.env up -d
+fi
