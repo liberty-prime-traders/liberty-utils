@@ -81,10 +81,11 @@ private fun populateLocation(entity: TransactionEntity) {
         return transactionMapper.toResponseDto(existingTransaction)
     }
     
-    fun deleteTransaction(id: UUID) {
+    fun deleteTransaction(id: UUID): TransactionResponseDto {
         val txn = transactionCache.getTransactionById(id) ?: throw RuntimeException("Transaction not found")
         contactNetStandingCache.adjust(txn.userId, TransactionDto(txn.amount, txn.transactionType, txn.location), null)
         transactionCache.deleteTransaction(id)
+        return transactionMapper.toResponseDto(txn)
     }
 
     fun getContactLast5Transactions(userId: UUID): Multimap<UUID, TransactionResponseDto> {
