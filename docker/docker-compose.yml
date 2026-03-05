@@ -24,6 +24,7 @@ services:
       - "traefik.http.routers.liberty-${ENV}.rule=Host(`liberty-utils-server-${ENV}.ezra-home.me`)"
       - "traefik.http.routers.liberty-${ENV}.entrypoints=websecure"
       - "traefik.http.routers.liberty-${ENV}.tls=true"
+      - "traefik.http.routers.liberty-${ENV}.tls.certresolver=acme-cert-resolver"
       - "traefik.http.services.liberty-${ENV}.loadbalancer.server.port=${PORT}"
 
     networks:
