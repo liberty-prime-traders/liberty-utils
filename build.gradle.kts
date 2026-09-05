@@ -1,92 +1,95 @@
 plugins {
-	kotlin("kapt") version "1.9.25"
-	kotlin("jvm") version "1.9.25"
-	kotlin("plugin.spring") version "1.9.25"
-	kotlin("plugin.jpa") version "1.9.25"
-	id("org.springframework.boot") version "3.3.11"
-	id("io.spring.dependency-management") version "1.1.7"
-	id("com.google.cloud.tools.jib") version "3.4.5"
+    kotlin("kapt") version "1.9.25"
+    kotlin("jvm") version "1.9.25"
+    kotlin("plugin.spring") version "1.9.25"
+    kotlin("plugin.jpa") version "1.9.25"
+    id("org.springframework.boot") version "3.3.11"
+    id("io.spring.dependency-management") version "1.1.7"
+    id("com.google.cloud.tools.jib") version "3.4.5"
 }
 
 group = "me.ezra-home"
 version = "0.0.1"
 
 jib {
-	from {
-		image = "eclipse-temurin:17-jre"
-		platforms {
-			platform {
-				architecture = "arm64"
-				os = "linux"
-			}
-		}
-	}
-	to {
-		image = "ezraorina834/liberty-utils-server:${project.findProperty("imageTag") ?: "latest"}"
-		tags = setOf(version.toString())
-	}
+    from {
+        image = "eclipse-temurin:17-jre"
+        platforms {
+            platform {
+                architecture = "arm64"
+                os = "linux"
+            }
+        }
+    }
+    to {
+        image = "ezraorina834/liberty-utils-server:${project.findProperty("imageTag") ?: "latest"}"
+        tags = setOf(version.toString())
+    }
 }
 
 java {
-	toolchain {
-		languageVersion.set(JavaLanguageVersion.of(17))
-	}
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(17))
+    }
 }
 
 configurations {
-	compileOnly {
-		extendsFrom(configurations.annotationProcessor.get())
-	}
+    compileOnly {
+        extendsFrom(configurations.annotationProcessor.get())
+    }
 }
 
 repositories {
-	mavenCentral()
-	gradlePluginPortal()
+    mavenCentral()
+    gradlePluginPortal()
     maven {
         url = uri("https://repo.enonic.com/public/")
     }
 }
 
 dependencies {
-	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-	implementation("org.springframework.boot:spring-boot-starter-web")
-	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
-	implementation("com.okta.spring:okta-spring-boot-starter:3.0.7")
-	implementation("com.okta.spring:okta-spring-sdk")
-	implementation("org.jetbrains.kotlin:kotlin-reflect")
-	implementation("com.google.code.gson:gson:2.10.1")
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+    implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+    implementation("com.okta.spring:okta-spring-boot-starter:3.0.7")
+    implementation("com.okta.spring:okta-spring-sdk")
+    implementation("org.jetbrains.kotlin:kotlin-reflect")
+    implementation("com.google.code.gson:gson:2.10.1")
 
-	implementation("org.liquibase:liquibase-core")
-	runtimeOnly("org.postgresql:postgresql")
+    implementation("org.liquibase:liquibase-core")
+    runtimeOnly("org.postgresql:postgresql")
 
-	compileOnly("org.projectlombok:lombok")
-	kapt("org.projectlombok:lombok")
+    compileOnly("org.projectlombok:lombok")
+    kapt("org.projectlombok:lombok")
 
-	implementation("org.mapstruct:mapstruct:1.6.3")
-	kapt("org.mapstruct:mapstruct-processor:1.6.3")
+    implementation("org.mapstruct:mapstruct:1.6.3")
+    kapt("org.mapstruct:mapstruct-processor:1.6.3")
 
-	testImplementation("org.springframework.boot:spring-boot-starter-test")
-	testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
-	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.1")
-	implementation("org.reactivestreams:reactive-streams:1.0.4")
-	implementation("org.springframework.boot:spring-boot-starter-webflux")
-	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
-    implementation("com.google.common:google-collect:0.5")
+    implementation("org.reactivestreams:reactive-streams:1.0.4")
+    implementation("org.springframework.boot:spring-boot-starter-webflux")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
+    testImplementation(kotlin("test"))
 }
 
 kotlin {
-	compilerOptions {
-		freeCompilerArgs.addAll("-Xjsr305=strict")
-	}
+    compilerOptions {
+        freeCompilerArgs.addAll("-Xjsr305=strict")
+    }
 }
 
 allOpen {
-	annotation("jakarta.persistence.Entity")
-	annotation("jakarta.persistence.MappedSuperclass")
-	annotation("jakarta.persistence.Embeddable")
+    annotation("jakarta.persistence.Entity")
+    annotation("jakarta.persistence.MappedSuperclass")
+    annotation("jakarta.persistence.Embeddable")
 }
 
 tasks.withType<Test> {
-	useJUnitPlatform()
+    useJUnitPlatform()
+}
+kapt {
+    keepJavacAnnotationProcessors = true
 }

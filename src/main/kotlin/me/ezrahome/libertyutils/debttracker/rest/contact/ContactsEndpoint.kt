@@ -31,7 +31,13 @@ class ContactsEndpoint(private val contactService: ContactService) {
 
     @GetMapping
     fun getAllUsers(): Collection<ContactResponseDto> = contactService.getAllContacts()
-    
+
+    @PostMapping("refresh-balances")
+    fun refreshBalances(): ResponseEntity<HttpStatus> {
+        contactService.refreshBalances()
+        return ResponseEntity(HttpStatus.OK)
+    }
+
     @DeleteMapping("{id}")
     fun deleteUser(@PathVariable id: UUID?): ResponseEntity<HttpStatus> {
         contactService.deleteContact(id!!)

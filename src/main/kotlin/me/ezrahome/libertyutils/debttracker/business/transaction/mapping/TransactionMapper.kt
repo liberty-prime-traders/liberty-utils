@@ -34,4 +34,6 @@ interface TransactionMapper {
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     fun partialUpdate(dto: TransactionUpdateDto, @MappingTarget entity: TransactionEntity)
 
+    fun cloneEntity(entity: TransactionEntity): TransactionEntity
+
 }

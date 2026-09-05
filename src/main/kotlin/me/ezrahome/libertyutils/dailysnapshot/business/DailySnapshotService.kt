@@ -1,6 +1,5 @@
 package me.ezrahome.libertyutils.dailysnapshot.business
 
-import lombok.RequiredArgsConstructor
 import me.ezrahome.libertyutils.configuration.security.LibertyPermissions
 import me.ezrahome.libertyutils.dailysnapshot.ExtraFieldsCalculator
 import me.ezrahome.libertyutils.dailysnapshot.model.DailySnapshotEntity
@@ -15,7 +14,6 @@ import java.time.LocalDate
 import java.util.UUID
 
 @Service
-@RequiredArgsConstructor
 class DailySnapshotService(
     private val dailySnapshotRepository: DailySnapshotRepository,
     private val dailySnapshotMapper: DailySnapshotMapper,

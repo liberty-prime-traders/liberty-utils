@@ -6,7 +6,10 @@ import me.ezrahome.libertyutils.debttracker.business.transaction.dto.Transaction
 import me.ezrahome.libertyutils.debttracker.model.TransactionType
 import me.ezrahome.libertyutils.platform.business.user_location.UserLocationUtils
 import me.ezrahome.libertyutils.reusable.model.LibertyLocation
+import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Service
+import org.springframework.transaction.support.TransactionSynchronization
+import org.springframework.transaction.support.TransactionSynchronizationManager
 import java.math.BigDecimal
 import java.util.UUID
 import java.util.concurrent.ConcurrentHashMap
@@ -20,6 +23,11 @@ class ContactNetStandingCache(
 
     @PostConstruct
     fun init() {
+        refreshFromDb()
+    }
+
+    @Scheduled(cron = "0 0 2 * * *")
+    fun refreshFromDb() {
         LibertyLocation.entries.forEach { location ->
             val mapForLocation: MutableMap<UUID, BigDecimal> = ConcurrentHashMap()
             transactionRepository.findAllUserBalancesByLocations(setOf(location)).forEach { projection ->
@@ -45,6 +53,24 @@ class ContactNetStandingCache(
 
         if (oldLoc == null && newLoc == null) return
 
+        if (TransactionSynchronizationManager.isSynchronizationActive()) {
+            TransactionSynchronizationManager.registerSynchronization(object : TransactionSynchronization {
+                override fun afterCommit() {
+                    applyAdjustment(userId, oldLoc, newLoc, oldTransaction, newTransaction)
+                }
+            })
+        } else {
+            applyAdjustment(userId, oldLoc, newLoc, oldTransaction, newTransaction)
+        }
+    }
+
+    private fun applyAdjustment(
+        userId: UUID,
+        oldLoc: LibertyLocation?,
+        newLoc: LibertyLocation?,
+        oldTransaction: TransactionDto?,
+        newTransaction: TransactionDto?
+    ) {
         val oldDelta = getChangeInOverallStanding(oldTransaction, null)
         val newDelta = getChangeInOverallStanding(null, newTransaction)
 

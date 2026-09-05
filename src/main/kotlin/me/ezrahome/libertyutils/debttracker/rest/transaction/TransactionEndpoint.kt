@@ -31,12 +31,12 @@ class TransactionEndpoint(private val transactionService: TransactionService) {
 
     @PostMapping("fetch-by-date")
     fun getTransactionsBetweenDates(@RequestBody dates: Collection<LocalDate>):  Map<String, Collection<TransactionResponseDto>> {
-        return transactionService.getTransactionsForTransactionDates(dates).asMap()
+        return transactionService.getTransactionsForTransactionDates(dates)
     }
 
     @GetMapping(params = ["userId"])
     fun getLast5Transactions(@PathParam("userId") userId: UUID): Map<UUID, Collection<TransactionResponseDto>> {
-        return transactionService.getContactLast5Transactions(userId).asMap()
+        return transactionService.getContactLast5Transactions(userId)
     }
 
     @DeleteMapping("{id}")

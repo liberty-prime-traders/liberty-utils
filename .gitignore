@@ -42,3 +42,7 @@ out/
 
 ### env ###
 *.env
+
+### Claude ###
+.claude-local/
+.DS_Store

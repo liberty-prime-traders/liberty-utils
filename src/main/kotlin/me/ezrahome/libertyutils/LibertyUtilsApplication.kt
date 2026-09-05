@@ -2,12 +2,14 @@ package me.ezrahome.libertyutils
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
+import org.springframework.scheduling.annotation.EnableScheduling
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity
 import org.springframework.transaction.annotation.EnableTransactionManagement
 
 @SpringBootApplication
 @EnableTransactionManagement
 @EnableMethodSecurity
+@EnableScheduling
 class LibertyUtilsApplication
 
 fun main(args: Array<String>) {

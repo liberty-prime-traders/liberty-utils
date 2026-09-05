@@ -5,31 +5,28 @@ import jakarta.persistence.Entity
 import jakarta.persistence.EnumType
 import jakarta.persistence.Enumerated
 import jakarta.persistence.Table
-import jakarta.validation.constraints.NotNull
 import me.ezrahome.libertyutils.platform.business.user_location.HasLibertyLocation
-import me.ezrahome.libertyutils.reusable.model.LibertyLocation
 import me.ezrahome.libertyutils.reusable.constants.TableNames
 import me.ezrahome.libertyutils.reusable.model.AuditableEntity
-import org.hibernate.annotations.ColumnDefault
-import java.util.UUID
-import java.time.LocalDate
+import me.ezrahome.libertyutils.reusable.model.LibertyLocation
 import java.math.BigDecimal
+import java.time.LocalDate
+import java.util.UUID
 
 @Entity
 @Table(name = TableNames.TRANSACTION)
 class TransactionEntity(
-    @NotNull
+
     @Column(name = "user_id", nullable = false)
     var userId: UUID? = null,
 
-    @Column(name = "transaction_date", updatable = false)
+    @Column(name = "transaction_date")
     var transactionDate: LocalDate? = null,
 
     @Enumerated(EnumType.STRING)
     @Column(name = "transaction_type", nullable = false)
     var transactionType: TransactionType? = null,
 
-    @ColumnDefault("0")
     @Column(name = "amount")
     var amount: BigDecimal? = null,
 

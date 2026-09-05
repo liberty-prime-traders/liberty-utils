@@ -41,6 +41,25 @@ class MasterAuditor(private val entityManager: EntityManager) {
                 && !field.isAnnotationPresent(AuditIgnore::class.java)
     }
 
+    fun logDelete(entity: AuditableEntity) {
+        val entityId = entity.id ?: return
+        val tableName = getTableName(entity)
+        val auditLogs = entity::class.memberProperties
+            .filter { "id" != it.name && isFieldAuditable(it.javaField!!) }
+            .map { prop ->
+                val oldValue = prop.getter.call(entity)?.toString() ?: "null"
+                MasterAuditEntity(
+                    tableName = tableName,
+                    recordId = entityId,
+                    fieldName = getColumnName(prop.javaField!!),
+                    oldValue = oldValue,
+                    newValue = "deleted",
+                    changedBy = SessionContextProvider.getUserId()
+                )
+            }
+        persistAuditLogs(auditLogs)
+    }
+
     fun logUpdate(before: AuditableEntity, after: AuditableEntity) {
         val auditLogs = getAuditDiff(before, after)
         persistAuditLogs(auditLogs)
@@ -71,6 +90,7 @@ class MasterAuditor(private val entityManager: EntityManager) {
     private fun persistAuditLogs(auditLogs: List<MasterAuditEntity>) {
         auditLogs.forEach { log -> entityManager.persist(log) }
     }
+
     private fun getTableName(entity: AuditableEntity): String {
         return entity.javaClass.annotations.find { it is Table }
              ?.let { (it as Table).name }

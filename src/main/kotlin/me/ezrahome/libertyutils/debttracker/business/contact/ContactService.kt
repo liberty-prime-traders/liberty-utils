@@ -54,6 +54,10 @@ class ContactService(
         contactCache.deleteContact(id!!)
     }
 
+    fun refreshBalances() {
+        contactNetStandingCache.refreshFromDb()
+    }
+
     companion object {
         const val NAME_IS_REQUIRED = "A contact must have a name"
         const val NAME_ALREADY_EXISTS = "A contact with the name %s already exists."

@@ -5,7 +5,6 @@ import me.ezrahome.libertyutils.dailysnapshot.business.DailySnapshotInsertDto
 import me.ezrahome.libertyutils.dailysnapshot.business.DailySnapshotResponseDto
 import me.ezrahome.libertyutils.dailysnapshot.business.DailySnapshotService
 import me.ezrahome.libertyutils.dailysnapshot.business.DailySnapshotUpdateDto
-import me.ezrahome.libertyutils.platform.business.audit.MasterAuditDto
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -27,11 +26,6 @@ class DailySnapshotEndpoint(private val dailySnapshotService: DailySnapshotServi
     ): Collection<DailySnapshotResponseDto> {
 
         return dailySnapshotService.getSnapshotsForDates(startDate, endDate)
-    }
-
-    @GetMapping("audit")
-    fun getAuditRecords(@PathParam("snapshotId") snapshotId: String): Collection<MasterAuditDto> {
-        return dailySnapshotService.getAuditRecords(snapshotId)
     }
 
     @PostMapping
