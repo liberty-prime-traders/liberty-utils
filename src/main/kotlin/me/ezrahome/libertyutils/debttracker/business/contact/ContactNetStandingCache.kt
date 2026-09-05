@@ -53,40 +53,33 @@ class ContactNetStandingCache(
 
         if (oldLoc == null && newLoc == null) return
 
-        if (TransactionSynchronizationManager.isSynchronizationActive()) {
-            TransactionSynchronizationManager.registerSynchronization(object : TransactionSynchronization {
-                override fun afterCommit() {
-                    applyAdjustment(userId, oldLoc, newLoc, oldTransaction, newTransaction)
-                }
-            })
-        } else {
-            applyAdjustment(userId, oldLoc, newLoc, oldTransaction, newTransaction)
-        }
-    }
-
-    private fun applyAdjustment(
-        userId: UUID,
-        oldLoc: LibertyLocation?,
-        newLoc: LibertyLocation?,
-        oldTransaction: TransactionDto?,
-        newTransaction: TransactionDto?
-    ) {
         val oldDelta = getChangeInOverallStanding(oldTransaction, null)
         val newDelta = getChangeInOverallStanding(null, newTransaction)
 
+        applyDeltas(userId, oldLoc, oldDelta, newLoc, newDelta)
+
+        if (TransactionSynchronizationManager.isSynchronizationActive()) {
+            TransactionSynchronizationManager.registerSynchronization(object : TransactionSynchronization {
+                override fun afterCompletion(status: Int) {
+                    // Applied eagerly above so callers (e.g. building a response DTO) see the
+                    // up-to-date balance immediately; undo it here if the transaction didn't commit
+                    // (rollback, optimistic-lock failure, etc.) to avoid drift from the DB.
+                    if (status != TransactionSynchronization.STATUS_COMMITTED) {
+                        applyDeltas(userId, oldLoc, oldDelta.negate(), newLoc, newDelta.negate())
+                    }
+                }
+            })
+        }
+    }
+
+    private fun applyDeltas(userId: UUID, oldLoc: LibertyLocation?, oldDelta: BigDecimal, newLoc: LibertyLocation?, newDelta: BigDecimal) {
         if (oldLoc != null) {
             netStandingsByLocation.computeIfAbsent(oldLoc) { ConcurrentHashMap() }
-                .compute(userId) { _, existing ->
-                    val current = existing ?: BigDecimal.ZERO
-                    current.add(oldDelta)
-                }
+                .merge(userId, oldDelta, BigDecimal::add)
         }
         if (newLoc != null) {
             netStandingsByLocation.computeIfAbsent(newLoc) { ConcurrentHashMap() }
-                .compute(userId) { _, existing ->
-                    val current = existing ?: BigDecimal.ZERO
-                    current.add(newDelta)
-                }
+                .merge(userId, newDelta, BigDecimal::add)
         }
     }
 
