@@ -1,5 +1,6 @@
 package me.ezrahome.libertyutils.configuration.security
 
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpMethod
@@ -31,8 +32,10 @@ class SecurityConfiguration {
     }
 
     @Bean
-    fun corsConfigurationSource(): CorsConfigurationSource {
-        val originPatterns = System.getenv("CORS_PATTERNS")?.split(",") ?: listOf()
+    fun corsConfigurationSource(
+        @Value("\${CORS_PATTERNS:}") corsPatterns: String,
+    ): CorsConfigurationSource {
+        val originPatterns = corsPatterns.split(",").map { it.trim() }.filter { it.isNotEmpty() }
         val configuration = CorsConfiguration().apply {
             this.allowedOriginPatterns = originPatterns
             this.allowedMethods = listOf("GET", "POST", "PUT", "DELETE", "OPTIONS")
